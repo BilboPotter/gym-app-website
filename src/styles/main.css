@@ -3952,25 +3952,51 @@ input:focus-visible {
   align-items: center;
   justify-content: center;
   padding: 24px;
+  /* Warm ambient to match the app's ViewportBackground (canvas + orange glow at 82%/84%). */
+  background:
+    radial-gradient(120% 82% at 82% 86%, rgba(255, 138, 31, 0.08), transparent 60%),
+    #0e0b08;
 }
 
+/* Flat, app-matching: drop the diagonal line texture on auth pages. */
+.auth-page .lines-bg {
+  display: none;
+}
+
+/* Card-less to match the app's flat AuthScaffold — a centered content column on the ambient
+   background, no border/fill/tile chrome. Keeps the #auth-card id so the handoff script's
+   .auth-success / .auth-error state hooks still resolve. */
 .auth-card {
   width: 100%;
-  max-width: 480px;
-  padding: 48px;
-  border: 1px solid var(--border);
-  border-top: 2px solid var(--primary);
-  background: rgba(18, 18, 26, 0.94);
+  max-width: 400px;
+  padding: 0;
+  border: none;
+  background: transparent;
   text-align: center;
 }
 
+.auth-brand {
+  display: block;
+  width: auto;
+  height: 34px;
+  margin: 0 auto 28px;
+}
+
 .auth-card h1 {
-  font-size: 26px;
-  margin-bottom: 16px;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
 }
 
 .auth-card p {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  color: var(--text-secondary);
+}
+
+/* Primary CTA: full-width, filled orange gradient (via the btn-primary class in markup). */
+#open-app {
+  width: 100%;
+  min-height: 52px;
 }
 
 .auth-spinner {

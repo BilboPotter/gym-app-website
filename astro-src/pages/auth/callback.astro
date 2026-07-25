@@ -16,12 +16,13 @@ const scriptHref = import.meta.env.DEV ? '/scripts/auth-callback.js' : assets.sc
     <div class="auth-page">
       <div class="lines-bg"></div>
       <div class="auth-card" id="auth-card">
+        <img class="auth-brand" src="/assets/brand-lockup-full.svg" alt={siteConfig.appName} width="176" height="34" />
         <div class="auth-spinner" id="spinner"></div>
         <h1>Signing you in</h1>
         <p>Redirecting you back to {siteConfig.appName} on this device...</p>
         <div class="auth-status" id="status">Opening app</div>
         <div style="margin-top:20px;">
-          <a href="#" id="open-app" class="btn">Continue In App</a>
+          <a href="#" id="open-app" class="btn btn-primary">Continue In App</a>
         </div>
 
         <div class="auth-fallback" id="fallback">
