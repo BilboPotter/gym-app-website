@@ -584,6 +584,47 @@ function verifyTimedExerciseDemo() {
   );
 }
 
+function verifyHomepageContentLayout() {
+  const indexHtml = readFile('index.html');
+  const sourcePage = fs.readFileSync(path.join(ROOT, 'astro-src', 'pages', 'index.astro'), 'utf8');
+  const sourceCss = fs.readFileSync(path.join(ROOT, 'src', 'styles', 'main.css'), 'utf8');
+
+  ['Track your weights and sets', 'Review results', 'See the progress'].forEach((heading) => {
+    assert(indexHtml.includes(heading), `Homepage is missing the updated journey heading: ${heading}`);
+  });
+
+  [
+    'Track what actually happened',
+    'Finish with a clear review',
+    'Watch the work add up',
+    'See each movement, log the work as it happens, and finish with a clear record of what you completed.',
+    'Optional warm-up rest',
+    'Timed sets in place',
+  ].forEach((retiredCopy) => {
+    assert(!indexHtml.includes(retiredCopy), `Homepage still contains retired copy: ${retiredCopy}`);
+  });
+
+  assert(
+    !sourcePage.includes('class="timers-stills"') &&
+      !sourceCss.includes('.timers-stills') &&
+      !sourceCss.includes('.timer-still'),
+    'Removed timing cards still have homepage markup or styling',
+  );
+
+  const productCardSources = sourcePage
+    .slice(sourcePage.indexOf('<div class="product-proof-grid">'), sourcePage.indexOf('</section>', sourcePage.indexOf('<div class="product-proof-grid">')))
+    .split('<article class="product-proof-card reveal">')
+    .slice(1);
+
+  assert(productCardSources.length === 3, 'Homepage product proof should contain exactly three cards');
+  productCardSources.forEach((cardSource, index) => {
+    assert(
+      cardSource.indexOf('class="product-proof-copy"') < cardSource.indexOf('class="product-proof-media'),
+      `Product proof card ${index + 1} does not place its information above its screenshot`,
+    );
+  });
+}
+
 function verifyAutoProgressionGraph() {
   const indexHtml = readFile('index.html');
   const cssMatch = indexHtml.match(/href="(\/styles\/main\.[^"]+\.css)"/);
@@ -658,6 +699,7 @@ function main() {
   verifyAndroidAssetLinks();
   verifyStoreLinks();
   verifyTimedExerciseDemo();
+  verifyHomepageContentLayout();
   verifyAutoProgressionGraph();
 
   console.log('Verified Astro build output.');
