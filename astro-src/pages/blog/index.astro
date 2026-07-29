@@ -15,11 +15,11 @@ const categories = [...new Set(posts.map((post) => post.category))];
 ---
 
 <BaseLayout
-  pageTitle={`Blog — ${siteConfig.appName}`}
-  pageDescription={`Writing from ${siteConfig.appName} on training, programming, product design, and building the app.`}
+  pageTitle={`Workout Planning and Training Guides | ${siteConfig.appName}`}
+  pageDescription="Practical guides to beginner training, workout planning, gym logging, exercise technique, and transparent progression from the Maatriks Team."
   canonicalUrl={`${siteConfig.siteUrl}/blog`}
   socialImage="/assets/social-blog.png"
-  socialImageAlt={`${siteConfig.appName} journal social preview`}
+  socialImageAlt="Maatriks workout planning and training guides"
   pageClass="content-page blog-page"
 >
   <section class="blog-hero-section section-block">
@@ -27,8 +27,8 @@ const categories = [...new Set(posts.map((post) => post.category))];
       <div class="blog-hero-shell">
         <div class="blog-hero-copy">
           <div class="section-label">Journal</div>
-          <h1>Training software should change after the session.</h1>
-          <p class="blog-hero-lead">Notes from building maatriks.ai on adaptive programming, product decisions, and systems that respond to what actually happened.</p>
+          <h1>Workout planning and training guides.</h1>
+          <p class="blog-hero-lead">Practical training guides, clear explanations of workout planning and progression, and product notes checked against the current Maatriks app.</p>
           <div class="blog-hero-meta">
             <span class="blog-hero-count">{blogPostCount}</span>
             <div class="blog-topic-row">
@@ -70,7 +70,7 @@ const categories = [...new Set(posts.map((post) => post.category))];
         <div class="blog-section-head">
           <div>
             <p class="blog-feature-label">Latest writing</p>
-            <h2>Essays and product notes</h2>
+            <h2>Guides and product notes</h2>
           </div>
         </div>
 

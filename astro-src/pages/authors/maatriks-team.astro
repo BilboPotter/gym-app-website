@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { loadBlogPosts } from '../../lib/blog.mjs';
+import { siteConfig } from '../../lib/site.mjs';
+import { authorSchema, webPageSchema } from '../../lib/schema.mjs';
+
+const posts = loadBlogPosts();
+const pageTitle = 'Maatriks Team — Authors';
+const pageDescription = 'Meet the team that builds Maatriks and checks its product claims and training articles against current app behavior and primary sources.';
+const path = '/authors/maatriks-team';
+---
+
+<BaseLayout
+  pageTitle={`${pageTitle} | Maatriks`}
+  pageDescription={pageDescription}
+  canonicalUrl={`${siteConfig.siteUrl}${path}`}
+  socialTitle={pageTitle}
+  socialDescription={pageDescription}
+  socialImage="/assets/social-blog.png"
+  socialImageAlt="Maatriks training guides and product notes"
+  structuredData={[
+    authorSchema(),
+    webPageSchema({ path, name: pageTitle, description: pageDescription, type: 'ProfilePage' }),
+  ]}
+  pageClass="content-page blog-page author-page"
+>
+  <section class="author-hero section-block">
+    <div class="container author-layout">
+      <div>
+        <p class="blog-feature-label">Author</p>
+        <h1>Maatriks Team</h1>
+      </div>
+      <div class="author-copy">
+        <p class="lead">
+          The Maatriks Team builds and maintains the Maatriks workout app. Product claims are checked against the current app, and training articles cite their primary sources.
+        </p>
+        <p>
+          Maatriks is published by Riverin OÜ. The team does not present itself as a medical provider, and articles are written as practical training information rather than individual medical advice.
+        </p>
+        <a class="blog-section-link" href={`mailto:${siteConfig.supportEmail}`}>Contact the team</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="blog-feed-section section-block" aria-labelledby="author-articles">
+    <div class="container">
+      <div class="blog-section-head">
+        <div>
+          <p class="blog-feature-label">Published work</p>
+          <h2 id="author-articles">Articles by Maatriks Team</h2>
+        </div>
+      </div>
+      <div class="blog-list">
+        {posts.map((post) => (
+          <article class="blog-list-card">
+            <a class="blog-list-link" href={`/blog/${post.slug}`}>
+              <div class="blog-card-meta">
+                <span class="blog-kicker">{post.category}</span>
+                <time datetime={post.date}>{post.dateShort}</time>
+                <span>{post.readingTimeLabel}</span>
+              </div>
+              <div class="blog-list-copy">
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+              </div>
+              <span class="blog-read-link">Read article</span>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

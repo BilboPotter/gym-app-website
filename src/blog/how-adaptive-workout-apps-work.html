@@ -1,79 +1,127 @@
 <!--meta
 {
-  "title": "How Adaptive Workout Apps Actually Work",
+  "title": "How Auto-Progression Workout Apps Work",
+  "seoTitle": "How Auto-Progression Workout Apps Work",
   "slug": "how-adaptive-workout-apps-work",
   "date": "2026-04-28",
-  "description": "Most workout apps give you the same plan every week. Adaptive ones change it based on what you actually did. Here is what that means in practice.",
-  "category": "Training"
+  "dateModified": "2026-07-29",
+  "description": "Learn how rule-based workout progression changes rep and weight targets, what completed sets count, and how it differs from AI feedback.",
+  "category": "Training",
+  "authorName": "Maatriks Team",
+  "authorPath": "/authors/maatriks-team",
+  "reviewedDate": "2026-07-29"
 }
 -->
 
-<p class="lead">You download a workout app. It asks your goal, maybe your experience level. It gives you a plan. You follow it for three weeks. On week four, you get the same plan again. Nothing changed - even though you did.</p>
+<p class="lead">An Auto-progression workout app changes future set targets through a defined rule. It does not need to rebuild the entire program, invent a new workout, or use AI.</p>
 
-<p>That is how most workout apps work. They generate a program once and expect you to run it until it stops working, at which point you are on your own.</p>
+<p>The basic job is narrow: compare eligible work you completed with the target, then decide whether the next set should stay the same, gain a rep, or move to a higher load. The quality of the feature depends on what counts as eligible work, how large the change can be, and whether the user can see what happened.</p>
 
-<p>Adaptive apps do something different. They look at what you actually did - not what was scheduled - and use that to decide what comes next. The idea is simple. The execution is what separates a genuinely adaptive app from one that just calls itself one.</p>
+<div class="article-note">
+  <p><strong>Terminology note:</strong> “Adaptive workout app” is a broad marketing phrase. One product may generate different exercises, another may adjust load, and another may offer conversational coaching. This guide focuses on rule-based Auto-progression for resistance-training targets.</p>
+</div>
 
-<h2>What "adaptive" actually means</h2>
+<h2>A stable program can still progress</h2>
 
-<p>An adaptive workout app changes your plan based on new information. That information comes from you logging your workouts - the sets you finished, the weight you used, the exercises you swapped, the sessions you skipped.</p>
+<p>Progression does not require changing the exercise list every week. A program can keep the same squat, press, pull, and hinge patterns while the targets inside those exercises move gradually.</p>
 
-<p>The key word is "based on." Not random variation. Not a new template every month. The app reads what happened and makes a specific decision about what should happen next.</p>
-
-<p>Here is a concrete example. Say your plan called for 3 sets of bench press at 60 kg. You logged 3 sets at 60 kg, all completed, last set felt smooth. An adaptive app might bump you to 62.5 kg next session. A static app would keep you at 60 until you manually changed it or until the program's built-in schedule told it to move.</p>
-
-<p>Now say you only finished 2 of the 3 sets. An adaptive app might keep the weight the same but drop the rep target, or hold you at that level for another session before trying to increase. A static app would not know the difference.</p>
-
-<h2>Three levels of "smart" in workout apps</h2>
-
-<p>Not all apps that claim to adapt are doing the same thing. It helps to know the difference.</p>
-
-<h3>Level 1: Rule-based</h3>
-
-<p>The app follows a fixed set of rules. If you complete the workout, go up. If you fail, go down or repeat. StrongLifts 5x5 is the clearest example - add 2.5 kg per session, deload after three failures. There is no intelligence here, just an if/then script. It works well for beginners running a linear program, but it breaks down once progress is no longer a straight line.</p>
-
-<h3>Level 2: Session-level adaptation</h3>
-
-<p>The app looks at your most recent session and adjusts the next one. It considers which muscles you worked, how much volume you did, how it compares to recent sessions, and what your goals are. Fitbod and FitnessAI work roughly at this level. Each new workout is generated from your recent history, not from a fixed template.</p>
-
-<p>The limitation is that the app decides in the background. You see the result - a new workout - but usually not the reasoning. You trust the output or you do not.</p>
-
-<h3>Level 3: Feedback loop with explanation</h3>
-
-<p>The app reads your session, generates the next plan, and explains what it changed and why. You can see the logic: "Bench went up cleanly - adding 2.5 kg next session. Incline press volume was low because of the swap - keeping the same weight to build a better baseline."</p>
-
-<p>This is what <a href="https://maatriks.ai">maatriks</a> does. After each workout, you get a short written summary that connects what happened to what comes next. The adaptation is not just happening - it is visible.</p>
-
-<p>Why does visibility matter? Because if you are a beginner, you are trying to learn how training works. An app that tells you "here is your workout" is useful. An app that tells you "here is your workout, and here is why it is different from last time" teaches you something along the way.</p>
-
-<h2>What the app needs from you</h2>
-
-<p>Adaptation only works if the input is honest. That means logging what actually happened, not what was supposed to happen.</p>
+<p>That separation is useful:</p>
 
 <ul>
-  <li><strong>If you swapped an exercise</strong> - log the one you did, not the one that was planned. The app needs to know you did dumbbell press instead of barbell bench. If it thinks you benched when you did not, the next plan is based on wrong information.</li>
-  <li><strong>If you cut a session short</strong> - log what you finished and leave the rest. Marking everything as done when you only did half defeats the point.</li>
-  <li><strong>If you went off-script</strong> - that is fine. Add the extra exercise or note the heavier weight. The more the app knows about what actually happened, the better the next session will be.</li>
+  <li><strong>The program</strong> defines the weekly structure, exercises, set order, and training intent.</li>
+  <li><strong>The set target</strong> defines what you are aiming to complete today.</li>
+  <li><strong>The workout log</strong> records what you actually did.</li>
+  <li><strong>The progression rule</strong> decides whether an eligible future target changes.</li>
 </ul>
 
-<p>This is the trade-off with adaptive apps. They are only as good as the data you give them. A static plan asks nothing of you except to show up and follow instructions. An adaptive plan asks you to spend 30 seconds after each set telling it what you did. That small investment is what makes the next workout yours instead of generic.</p>
+<p>When those layers are mixed together, it becomes hard to tell whether the app is progressing a target, editing the program, or merely writing feedback.</p>
 
-<h2>How to tell if an app is actually adaptive</h2>
+<h2>The rep-range model</h2>
 
-<p>A lot of apps use the word "adaptive" or "personalised" in their marketing. Here is how to tell whether they mean it.</p>
+<p>One transparent progression model gives each working set a lower and upper rep target. Imagine a set with a range of 6–8 reps:</p>
 
 <ol>
-  <li><strong>Log two identical sessions, then change the third.</strong> Go lighter, skip an exercise, or swap one out. If your fourth workout looks exactly the same as it would have otherwise, the app is not adapting.</li>
-  <li><strong>Skip a week and come back.</strong> Does the app pick up where you left off, or does it still say "Week 5, Day 1" as if nothing happened?</li>
-  <li><strong>Look for an explanation.</strong> After a session, does the app tell you anything about what it will change next? Or does a new workout just appear without context?</li>
+  <li>The set starts at 6 reps with a chosen load.</li>
+  <li>After eligible completed work, the next target can move to 7 reps.</li>
+  <li>It can then move to 8 reps while the load stays stable.</li>
+  <li>After the top of the range is reached, the load can increase by a configured amount and the rep target returns within the range.</li>
 </ol>
 
-<p>If the app cannot pass these three checks, it is a template with a timer - not an adaptive system.</p>
+<p>The important property is predictability. A one-rep step and a configured load increment are easier to understand than a target that changes without an explanation.</p>
 
-<h2>Does any of this matter for a beginner?</h2>
+<h2>What should count as completed work?</h2>
 
-<p>Honestly - it matters less than just going to the gym. Any plan is better than no plan in the first few weeks. A static 3-day program from a <a href="/blog/what-to-do-at-gym-beginner">blog post</a> will get you started and teach you the basics.</p>
+<p>A progression system needs a clear definition of the evidence it uses. In a resistance-training program, a warm-up set does not serve the same purpose as a working set. A thirty-second plank target is not equivalent to a barbell set measured in reps and kilograms.</p>
 
-<p>Where adaptation starts to matter is around week three or four. That is when your body has adjusted to the initial weights, some exercises feel too easy, others are still hard, and you have probably missed a session or two. A static plan does not account for any of that. An adaptive one does.</p>
+<p>For Maatriks, the current boundary is explicit:</p>
 
-<p>If you are the kind of person who wants to understand why your plan is changing - not just trust that it is - an app with visible feedback will keep you engaged longer than one that operates as a black box. That is the argument for adaptive training: not that it is better in week one, but that it keeps working in month three when a fixed plan has gone stale.</p>
+<ul>
+  <li>eligible completed <strong>working sets</strong> can feed Auto-progression;</li>
+  <li>each eligible set needs a saved rep range;</li>
+  <li>warm-up sets do not Auto-progress;</li>
+  <li>timed sets do not Auto-progress;</li>
+  <li>assisted or otherwise ineligible movements remain manual;</li>
+  <li>unusual changes can wait for manual review.</li>
+</ul>
+
+<p>An exercise swap or missed session can still be useful workout history, but Maatriks does not market either one as an automatic progression input.</p>
+
+<h2>Reps and load are not always progressed the same way</h2>
+
+<p>An externally loaded barbell, dumbbell, machine, or cable movement can add a configured amount of weight after the top of a rep range. A bodyweight-only movement cannot use the same load rule, so reps are the available progression target. Assisted movements have a different direction of difficulty and remain manual in the current implementation.</p>
+
+<p>This is why a credible Auto-progression feature needs exercise capability rules. Applying one universal “add weight” instruction to every movement would produce misleading targets.</p>
+
+<h2>Auto-progression is not AI feedback</h2>
+
+<div class="comparison-table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>System</th>
+        <th>Input</th>
+        <th>Output</th>
+        <th>Role in Maatriks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Auto-progression</strong></td>
+        <td>Eligible completed working sets, saved per-set ranges, and configured increments</td>
+        <td>A bounded next rep or load target</td>
+        <td>Optional deterministic programming rule</td>
+      </tr>
+      <tr>
+        <td><strong>AI feedback</strong></td>
+        <td>The completed workout summary and reflection context</td>
+        <td>Post-workout coaching-style feedback</td>
+        <td>Separate reflection; it does not decide progression</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>Calling both systems “AI adaptation” would hide an important product choice. One system changes targets through code-owned rules. The other explains and reflects on the finished session in natural language.</p>
+
+<h2>What to look for in an Auto-progression app</h2>
+
+<ol>
+  <li><strong>A visible rule.</strong> You should know why the target changed.</li>
+  <li><strong>Small steps.</strong> Progression should not jump unpredictably after one session.</li>
+  <li><strong>Exercise-aware behavior.</strong> Reps, external load, bodyweight, assistance, and timed work need different handling.</li>
+  <li><strong>Manual control.</strong> You should be able to edit the program and switch the feature off.</li>
+  <li><strong>A clean record.</strong> Planned targets and completed values should remain distinguishable.</li>
+  <li><strong>Failure containment.</strong> If an automatic rule cannot apply safely, the target should remain manual instead of inventing a value.</li>
+</ol>
+
+<h2>How Maatriks applies the model</h2>
+
+<p>In <a href="/auto-progression">Maatriks Auto-progression</a>, each eligible working set owns its rep range. Targets move one rep at a time inside that range, and an eligible load increase happens only after the set reaches the top. The change is shown before the next session.</p>
+
+<p>The feature is optional. Turning it off leaves the program under manual control. You can still use the <a href="/gym-workout-tracker">gym workout tracker</a>, timers, exercise guidance, and post-workout summary without asking Maatriks to calculate later targets.</p>
+
+<h2>How other products use the term</h2>
+
+<p>Products implement progression differently. <a href="https://stronglifts.com/app/">StrongLifts</a> describes automatic progression and deloads as part of its program system. <a href="https://www.fitnessai.com/">FitnessAI</a> markets algorithmic weight and repetition recommendations. Their rules and scope are not interchangeable with Maatriks, so comparisons should describe the mechanism rather than assuming every “adaptive” app behaves the same way.</p>
+
+<p>If your current program changes so often that you cannot explain the next target, the problem may not be a lack of adaptation. It may be a lack of a visible rule.</p>

@@ -1,0 +1,165 @@
+---
+import EntryFaq from '../components/entry/EntryFaq.astro';
+import EntryPageLayout from '../components/entry/EntryPageLayout.astro';
+import EntryRelated from '../components/entry/EntryRelated.astro';
+import ProductMedia from '../components/entry/ProductMedia.astro';
+import StoreLinks from '../components/entry/StoreLinks.astro';
+
+const path = '/workout-planner-app';
+const pageTitle = 'Workout Planner App That Gives You a Plan | Maatriks';
+const pageDescription = 'Start with a structured workout program based on your schedule, experience, focus, session length, and movement exclusions, then edit it anytime.';
+const faqs = [
+  {
+    question: 'Can I edit the workout program?',
+    answer: 'Yes. You can change the workouts, exercise order, warm-ups, working sets, rep or time targets, and exercises in the program editor.',
+  },
+  {
+    question: 'Does AI build or control the program?',
+    answer: 'No. Your setup creates a structured starting program that remains editable. AI is used separately for post-workout feedback.',
+  },
+  {
+    question: 'Can I see the workout before I start it?',
+    answer: 'Yes. The prepared session shows its exercises, warm-ups, working sets, and targets before you begin logging.',
+  },
+];
+---
+
+<EntryPageLayout
+  path={path}
+  pageTitle={pageTitle}
+  pageDescription={pageDescription}
+  socialImage="/assets/social-workout-planner-app.png"
+  socialImageAlt="Maatriks workout planner with onboarding and a prepared workout"
+  faqs={faqs}
+  routeClass="entry-page--planner"
+>
+  <section class="entry-hero section-block">
+    <div class="container entry-hero-grid">
+      <div class="entry-hero-copy reveal">
+        <p class="entry-eyebrow">Workout planner</p>
+        <h1>A plan before the first set.</h1>
+        <p class="entry-lead">
+          Give Maatriks the shape of your training week. It turns that setup into scheduled workouts you can inspect before the gym and edit whenever the plan needs to change.
+        </p>
+        <StoreLinks />
+      </div>
+
+      <div class="entry-screen-pair entry-screen-pair--planner" aria-label="Maatriks setup and prepared workout screens">
+        <ProductMedia
+          src="/assets/product-onboarding.jpg"
+          alt="Maatriks onboarding screen for choosing training experience"
+          width="720"
+          height="1452"
+          presentation="phone-small"
+          priority={true}
+          mediaClass="entry-screen-pair-back"
+        />
+        <ProductMedia
+          src="/assets/product-workout-active.jpg"
+          alt="Prepared Maatriks workout with exercises, warm-ups, working sets, repetitions, and weight targets"
+          width="828"
+          height="1709"
+          presentation="phone"
+          priority={true}
+          mediaClass="entry-screen-pair-front"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--planner-inputs section-block" aria-labelledby="planner-inputs-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">Your setup</p>
+        <h2 id="planner-inputs-title">Built around the week you give it.</h2>
+        <p>
+          The starting program comes from the information you enter—not from a hidden AI coach making decisions after each session.
+        </p>
+      </div>
+      <dl class="entry-fact-list reveal">
+        <div><dt>Schedule</dt><dd>The days you want to train.</dd></div>
+        <div><dt>Experience</dt><dd>The training background you select.</dd></div>
+        <div><dt>Focus</dt><dd>The emphasis you choose for the program.</dd></div>
+        <div><dt>Session length</dt><dd>The time you want each workout to fit.</dd></div>
+        <div><dt>Exclusions</dt><dd>Movements you do not want included.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--proof section-block" aria-labelledby="planner-session-title">
+    <div class="container entry-proof-layout">
+      <ProductMedia
+        src="/assets/product-workout-active.jpg"
+        alt="Maatriks Full Body A workout showing the planned Barbell Bench Press sets"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">Before you train</p>
+        <h2 id="planner-session-title">See the session before you start it.</h2>
+        <p>
+          Open a workout to see the exercise order, separate warm-ups and working sets, and the target beside each set. You arrive with a session to follow, while the actual values remain yours to record.
+        </p>
+        <ul class="entry-check-list">
+          <li>Exercises stay in a visible order.</li>
+          <li>Warm-ups remain separate from working sets.</li>
+          <li>Rep, load, and time targets sit beside the work.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--editor section-block" aria-labelledby="planner-editor-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">Still your program</p>
+        <h2 id="planner-editor-title">Change the plan without starting over.</h2>
+      </div>
+      <div class="entry-copy-stack reveal">
+        <p class="entry-copy-large">
+          Edit a workout when its structure no longer fits. Exercises, order, warm-ups, working sets, and their targets can be changed in the program editor.
+        </p>
+        <p>
+          A change made only inside an active session stays with that workout record. It does not silently rewrite the saved program.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--flow section-block" aria-labelledby="planner-flow-title">
+    <div class="container">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">One continuous path</p>
+        <h2 id="planner-flow-title">From setup to the gym.</h2>
+      </div>
+      <ol class="entry-flow">
+        <li><span>01</span><div><h3>Describe the week</h3><p>Set the training schedule and program inputs you want Maatriks to use.</p></div></li>
+        <li><span>02</span><div><h3>Review the program</h3><p>Look through the workouts and change the details that need your judgment.</p></div></li>
+        <li><span>03</span><div><h3>Open a prepared session</h3><p>Start with the planned order and targets, then log what you actually complete.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <EntryFaq heading="Before you make it your plan." faqs={faqs} id="planner-questions" />
+
+  <section class="entry-close section-block">
+    <div class="container entry-close-inner">
+      <div>
+        <p class="entry-eyebrow">Ready for the week</p>
+        <h2>Start with structure. Keep the final say.</h2>
+      </div>
+      <StoreLinks label="Download the Maatriks workout planner" />
+    </div>
+  </section>
+
+  <EntryRelated
+    heading="See what happens after the plan is ready."
+    id="planner-next"
+    related={[
+      { href: '/gym-workout-tracker', label: 'In the gym', title: 'Track the session you perform' },
+      { href: '/auto-progression', label: 'Next targets', title: 'See how Auto-progression works' },
+      { href: '/blog/best-workout-split-for-beginners', label: 'Planning guide', title: 'Choose a split that fits your week' },
+    ]}
+  />
+</EntryPageLayout>

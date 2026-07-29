@@ -1,0 +1,161 @@
+---
+import EntryFaq from '../components/entry/EntryFaq.astro';
+import EntryPageLayout from '../components/entry/EntryPageLayout.astro';
+import EntryRelated from '../components/entry/EntryRelated.astro';
+import StoreLinks from '../components/entry/StoreLinks.astro';
+
+const path = '/auto-progression';
+const pageTitle = 'Auto-Progression for Workout Targets | Maatriks';
+const pageDescription = 'See how Maatriks uses completed eligible working sets and saved rep ranges to calculate visible next targets with optional Auto-progression.';
+const faqs = [
+  {
+    question: 'Is Auto-progression controlled by AI?',
+    answer: 'No. Auto-progression uses deterministic rules. AI feedback is a separate post-workout reflection and does not decide target changes.',
+  },
+  {
+    question: 'Which sets can Auto-progress?',
+    answer: 'It applies only to eligible working sets with saved rep ranges. Warm-ups, timed sets, and ineligible movement types remain manual.',
+  },
+  {
+    question: 'Can I turn Auto-progression off?',
+    answer: 'Yes. Auto-progression is optional and can be switched off in the program settings.',
+  },
+];
+---
+
+<EntryPageLayout
+  path={path}
+  pageTitle={pageTitle}
+  pageDescription={pageDescription}
+  socialImage="/assets/social-auto-progression.png"
+  socialImageAlt="Maatriks Auto-progression rules for completed work, rep ranges, and next targets"
+  faqs={faqs}
+  routeClass="entry-page--progression"
+>
+  <section class="entry-hero entry-progression-hero section-block">
+    <div class="container entry-hero-grid">
+      <div class="entry-hero-copy reveal">
+        <p class="entry-eyebrow">Auto-progression</p>
+        <h1>Know what to aim for next.</h1>
+        <p class="entry-lead">
+          Maatriks compares eligible working sets you complete with the rep range saved for each set, then shows the calculated target for the next session.
+        </p>
+        <p class="entry-note">Auto-progression is optional and can be switched on or off in the program settings.</p>
+        <StoreLinks />
+      </div>
+
+      <div class="entry-auto-visual auto-progression-section" aria-label="How Maatriks calculates a next target">
+        <div class="auto-progression-graph" data-auto-progression-graph aria-hidden="true">
+          <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="progression-line-gradient" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#e06800" stop-opacity="0.32" />
+                <stop offset="58%" stop-color="#ff8a1f" stop-opacity="0.9" />
+                <stop offset="100%" stop-color="#ffd080" />
+              </linearGradient>
+              <linearGradient id="progression-glow-gradient" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#e06800" stop-opacity="0.08" />
+                <stop offset="58%" stop-color="#ff8a1f" stop-opacity="0.18" />
+                <stop offset="100%" stop-color="#ffb347" stop-opacity="0.286" />
+              </linearGradient>
+              <linearGradient id="progression-area-gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ff8a1f" stop-opacity="0.16" />
+                <stop offset="100%" stop-color="#ff8a1f" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path class="auto-progression-graph-area" d="M-40 620 C90 600 160 560 250 570 S420 510 510 500 S660 430 735 445 S900 350 980 300 S1110 235 1200 190 L1200 700 L-40 700 Z" />
+            <path class="auto-progression-graph-glow" pathLength="1" d="M-40 620 C90 600 160 560 250 570 S420 510 510 500 S660 430 735 445 S900 350 980 300 S1110 235 1200 190" />
+            <path class="auto-progression-graph-line" pathLength="1" d="M-40 620 C90 600 160 560 250 570 S420 510 510 500 S660 430 735 445 S900 350 980 300 S1110 235 1200 190" />
+            <g class="auto-progression-graph-points">
+              <circle class="auto-progression-graph-point" cx="250" cy="570" r="5" />
+              <circle class="auto-progression-graph-point" cx="735" cy="445" r="5" />
+              <circle class="auto-progression-graph-point" cx="980" cy="300" r="6" />
+            </g>
+          </svg>
+        </div>
+        <div class="entry-rule-panel">
+          <span class="entry-rule-badge">Clear rules · visible changes</span>
+          <ol>
+            <li><span>01</span><div><strong>Completed work</strong><p>Use the eligible working sets you actually finished.</p></div></li>
+            <li><span>02</span><div><strong>Saved rep range</strong><p>Compare each result with the range stored for that set.</p></div></li>
+            <li><span>03</span><div><strong>Next target</strong><p>Show the rule-based change before the next session.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--progression-example section-block" aria-labelledby="progression-example-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">Per eligible set</p>
+        <h2 id="progression-example-title">One completed set, one visible next step.</h2>
+      </div>
+      <div class="entry-progression-example reveal">
+        <div><span>Completed</span><strong>The working target</strong><p>The set must be eligible and finished.</p></div>
+        <span aria-hidden="true">→</span>
+        <div><span>Compared</span><strong>Its saved rep range</strong><p>The rule is specific to that set.</p></div>
+        <span aria-hidden="true">→</span>
+        <div><span>Shown</span><strong>The next target</strong><p>You can see what changed before returning.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--manual section-block" aria-labelledby="progression-manual-title">
+    <div class="container">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">Bounded by design</p>
+        <h2 id="progression-manual-title">What changes—and what stays manual.</h2>
+      </div>
+      <div class="entry-boundary-grid">
+        <article class="reveal">
+          <span>Eligible for the rule</span>
+          <h3>Saved working sets</h3>
+          <p>Auto-progression can evaluate eligible completed working sets that have a saved rep range.</p>
+        </article>
+        <article class="reveal">
+          <span>Outside the rule</span>
+          <h3>Warm-ups and timed work</h3>
+          <p>Preparation sets, timed sets, and ineligible movement types remain where you set them.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--separation section-block" aria-labelledby="progression-separation-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">Two separate jobs</p>
+        <h2 id="progression-separation-title">Target changes are not AI feedback.</h2>
+      </div>
+      <div class="entry-copy-stack reveal">
+        <p class="entry-copy-large">
+          Auto-progression follows explicit rules for eligible set targets. AI writes a reflection after the workout; it does not choose the progression.
+        </p>
+        <p>That separation keeps the changed target traceable to completed work and the rep range you saved.</p>
+      </div>
+    </div>
+  </section>
+
+  <EntryFaq heading="The limits are part of the feature." faqs={faqs} id="progression-questions" />
+
+  <section class="entry-close section-block">
+    <div class="container entry-close-inner">
+      <div>
+        <p class="entry-eyebrow">A clear next step</p>
+        <h2>Use progression when you want the target calculated.</h2>
+      </div>
+      <StoreLinks label="Download Maatriks with Auto-progression" />
+    </div>
+  </section>
+
+  <EntryRelated
+    heading="Connect the next target to the work behind it."
+    id="progression-next"
+    related={[
+      { href: '/gym-workout-tracker', label: 'Completed work', title: 'Track the sets the rule can use' },
+      { href: '/workout-planner-app', label: 'Program settings', title: 'Build and edit the plan' },
+      { href: '/blog/how-adaptive-workout-apps-work', label: 'Detailed explainer', title: 'Rule-based progression without the mystery' },
+    ]}
+  />
+</EntryPageLayout>

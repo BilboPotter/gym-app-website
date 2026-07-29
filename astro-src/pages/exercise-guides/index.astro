@@ -1,0 +1,148 @@
+---
+import EntryFaq from '../../components/entry/EntryFaq.astro';
+import EntryPageLayout from '../../components/entry/EntryPageLayout.astro';
+import EntryRelated from '../../components/entry/EntryRelated.astro';
+import ProductMedia from '../../components/entry/ProductMedia.astro';
+import StoreLinks from '../../components/entry/StoreLinks.astro';
+
+const path = '/exercise-guides';
+const pageTitle = 'Exercise Guides With Movement Demonstrations | Maatriks';
+const pageDescription = 'Open a Maatriks exercise reference for a looping movement demonstration, muscle labels, general setup and execution notes, and related workout tools.';
+const faqs = [
+  {
+    question: 'Are these movement demonstrations used in the app?',
+    answer: 'Yes. Maatriks shows looping exercise demonstrations in its exercise detail screens.',
+  },
+  {
+    question: 'Do these guides replace a trainer or clinician?',
+    answer: 'No. They are general, app-maintained references and cannot account for your body, equipment, injury history, pain, or individual instruction.',
+  },
+];
+---
+
+<EntryPageLayout
+  path={path}
+  pageTitle={pageTitle}
+  pageDescription={pageDescription}
+  socialImage="/assets/social-exercise-guides.png"
+  socialImageAlt="Maatriks exercise guides with Barbell Squat and Barbell Bench Press demonstrations"
+  faqs={faqs}
+  routeClass="entry-page--guides"
+>
+  <section class="entry-hero entry-guides-hero section-block">
+    <div class="container entry-hero-grid">
+      <div class="entry-hero-copy reveal">
+        <p class="entry-eyebrow">Exercise references</p>
+        <h1>Open the movement before the set.</h1>
+        <p class="entry-lead">
+          Watch a looping demonstration, see the muscles labeled in Maatriks, and read a restrained setup and execution reference without leaving the workout.
+        </p>
+        <p class="entry-provenance">Maintained by Maatriks Team · Product content checked July 29, 2026</p>
+        <StoreLinks label="Download Maatriks exercise references" />
+      </div>
+      <ProductMedia
+        type="video"
+        src="/assets/barbell-squat.mp4"
+        poster="/assets/barbell-squat.webp"
+        alt="Looping Barbell Squat movement demonstration"
+        width="1080"
+        height="604"
+        presentation="landscape"
+        priority={true}
+        caption="Barbell Squat demonstration"
+      />
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--guide-library section-block" aria-labelledby="guide-library-title">
+    <div class="container">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">Current public guides</p>
+        <h2 id="guide-library-title">Choose a movement.</h2>
+        <p>These are the exercise references currently available on the website.</p>
+      </div>
+      <div class="entry-guide-cards">
+        <a class="entry-guide-card reveal" href="/exercise-guides/barbell-squat">
+          <ProductMedia
+            type="video"
+            src="/assets/barbell-squat.mp4"
+            poster="/assets/barbell-squat.webp"
+            alt="Looping Barbell Squat demonstration"
+            width="1080"
+            height="604"
+            presentation="bare"
+          />
+          <div><span>Lower body · Barbell</span><h3>Barbell Squat</h3><p>Open the movement, muscle labels, and general reference.</p></div>
+        </a>
+        <a class="entry-guide-card reveal" href="/exercise-guides/barbell-bench-press">
+          <ProductMedia
+            type="video"
+            src="/assets/barbell-bench-press.mp4"
+            poster="/assets/barbell-bench-press.webp"
+            alt="Looping Barbell Bench Press demonstration"
+            width="1080"
+            height="604"
+            presentation="bare"
+          />
+          <div><span>Upper body · Barbell</span><h3>Barbell Bench Press</h3><p>Open the movement, muscle labels, and general reference.</p></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--guide-contents section-block" aria-labelledby="guide-contents-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">On each page</p>
+        <h2 id="guide-contents-title">A short reference, not a coaching claim.</h2>
+      </div>
+      <dl class="entry-fact-list reveal">
+        <div><dt>Movement</dt><dd>A looping visual of the exercise.</dd></div>
+        <div><dt>Muscles</dt><dd>The primary and secondary labels used by Maatriks.</dd></div>
+        <div><dt>Setup</dt><dd>General points that leave room for individual instruction.</dd></div>
+        <div><dt>Execution</dt><dd>Restrained movement notes without universal angles or ranges.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--guide-app section-block" aria-labelledby="guide-app-title">
+    <div class="container entry-proof-layout">
+      <ProductMedia
+        src="/assets/product-exercise-squat.jpg"
+        alt="Barbell Squat exercise reference open in the Maatriks app"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">Beside the workout</p>
+        <h2 id="guide-app-title">Keep the reference connected to the exercise.</h2>
+        <p>
+          In Maatriks, the demonstration and exercise information are part of the movement screen. Return to the active workout to log the set on the exercise you opened.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <EntryFaq heading="How to use a general movement reference." faqs={faqs} id="guide-questions" />
+
+  <section class="entry-close section-block">
+    <div class="container entry-close-inner">
+      <div>
+        <p class="entry-eyebrow">Beside the next set</p>
+        <h2>Keep the movement reference with the workout.</h2>
+      </div>
+      <StoreLinks label="Download Maatriks exercise guides" />
+    </div>
+  </section>
+
+  <EntryRelated
+    heading="Take the reference back to a structured session."
+    id="guide-next"
+    related={[
+      { href: '/gym-workout-tracker', label: 'Workout log', title: 'Record the set in the active workout' },
+      { href: '/beginner-workout-app', label: 'Structured start', title: 'See the plan and movement together' },
+      { href: '/workout-timers', label: 'Timed exercises', title: 'Run the timer beside the set' },
+    ]}
+  />
+</EntryPageLayout>

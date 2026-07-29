@@ -1,0 +1,25 @@
+---
+const {
+  heading,
+  intro = '',
+  faqs = [],
+  id = 'questions',
+} = Astro.props;
+---
+
+<section class="entry-section entry-section--faq section-block" aria-labelledby={`${id}-title`}>
+  <div class="container entry-faq-layout">
+    <div class="entry-section-head">
+      <h2 id={`${id}-title`}>{heading}</h2>
+      {intro && <p>{intro}</p>}
+    </div>
+    <div class="entry-faq-list">
+      {faqs.map((faq) => (
+        <details>
+          <summary>{faq.question}</summary>
+          <p>{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

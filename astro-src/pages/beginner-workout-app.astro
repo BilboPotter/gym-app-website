@@ -1,0 +1,167 @@
+---
+import EntryFaq from '../components/entry/EntryFaq.astro';
+import EntryPageLayout from '../components/entry/EntryPageLayout.astro';
+import EntryRelated from '../components/entry/EntryRelated.astro';
+import ProductMedia from '../components/entry/ProductMedia.astro';
+import StoreLinks from '../components/entry/StoreLinks.astro';
+
+const path = '/beginner-workout-app';
+const pageTitle = 'Beginner Workout App With a Clear Gym Plan | Maatriks';
+const pageDescription = 'If you want a structured place to start, Maatriks gives you an editable program, movement references, workout logging, and a post-session record.';
+const faqs = [
+  {
+    question: 'Can I change the starting program?',
+    answer: 'Yes. The program is a structured starting point, not a fixed prescription. You can edit its workouts, exercises, sets, and targets.',
+  },
+  {
+    question: 'What if I am unsure about an exercise?',
+    answer: 'Open its demonstration and general movement reference before the set. For technique that needs to account for your body, equipment, injury history, or pain, use qualified individual guidance.',
+  },
+  {
+    question: 'Will the app change the plan after every workout?',
+    answer: 'No. Your program stays where you set it unless you edit it. Optional Auto-progression can make bounded target changes only to eligible working sets.',
+  },
+];
+---
+
+<EntryPageLayout
+  path={path}
+  pageTitle={pageTitle}
+  pageDescription={pageDescription}
+  socialImage="/assets/social-beginner-workout-app.png"
+  socialImageAlt="Maatriks structured workout and Barbell Squat movement reference"
+  faqs={faqs}
+  routeClass="entry-page--beginner"
+>
+  <section class="entry-hero section-block">
+    <div class="container entry-hero-grid">
+      <div class="entry-hero-copy reveal">
+        <p class="entry-eyebrow">A structured place to start</p>
+        <h1>Start with a plan you can change.</h1>
+        <p class="entry-lead">
+          Maatriks turns your setup into an editable program, keeps the next workout visible, and puts a movement reference beside each exercise.
+        </p>
+        <StoreLinks />
+      </div>
+      <div class="entry-screen-pair entry-screen-pair--beginner" aria-label="Maatriks workout and exercise reference screens">
+        <ProductMedia
+          src="/assets/product-workout-active.jpg"
+          alt="Maatriks Full Body A workout with exercises and set targets"
+          width="828"
+          height="1709"
+          presentation="phone-small"
+          priority={true}
+          mediaClass="entry-screen-pair-back"
+        />
+        <ProductMedia
+          src="/assets/product-exercise-squat.jpg"
+          alt="Maatriks Barbell Squat exercise reference with demonstration and muscle labels"
+          width="828"
+          height="1709"
+          presentation="phone"
+          priority={true}
+          mediaClass="entry-screen-pair-front"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--beginner-session section-block" aria-labelledby="beginner-session-title">
+    <div class="container entry-proof-layout">
+      <ProductMedia
+        src="/assets/product-workout-active.jpg"
+        alt="Prepared Maatriks workout showing exercise order, warm-ups, and working sets"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">Before the gym</p>
+        <h2 id="beginner-session-title">See what the session contains.</h2>
+        <p>
+          The planned exercise order and targets are visible before you begin. That gives you a concrete session to inspect without claiming that one program is right for every new lifter.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--beginner-movement section-block" aria-labelledby="beginner-movement-title">
+    <div class="container entry-proof-layout entry-proof-layout--wide entry-proof-layout--reverse">
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">Before the set</p>
+        <h2 id="beginner-movement-title">Open a movement before you try it.</h2>
+        <p>
+          Watch the exercise loop, then read the general setup and execution reference. It is a convenient reminder inside the workout, not individualized coaching.
+        </p>
+        <a class="entry-text-link" href="/exercise-guides/barbell-squat">Open the Barbell Squat guide →</a>
+      </div>
+      <ProductMedia
+        type="video"
+        src="/assets/barbell-squat.mp4"
+        poster="/assets/barbell-squat.webp"
+        alt="Looping Barbell Squat movement demonstration"
+        width="1080"
+        height="604"
+        presentation="landscape"
+      />
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--beginner-control section-block" aria-labelledby="beginner-control-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">No locked prescription</p>
+        <h2 id="beginner-control-title">Use the plan—or edit it.</h2>
+      </div>
+      <div class="entry-copy-stack reveal">
+        <p class="entry-copy-large">
+          Change the workout when the schedule, equipment, exercise, or target does not suit the session you intend to do.
+        </p>
+        <p>
+          Individual decisions about load, technique, pain, and physical limitations need context the app cannot infer from a general page.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--beginner-review section-block" aria-labelledby="beginner-review-title">
+    <div class="container entry-proof-layout">
+      <ProductMedia
+        src="/assets/product-workout-summary.jpg"
+        alt="Maatriks completed workout summary with recorded work and feedback"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">After the workout</p>
+        <h2 id="beginner-review-title">Record the session and review it.</h2>
+        <p>
+          Log the sets you actually perform, then use the summary to see the completed work in one place. The record gives you context for deliberate edits later.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <EntryFaq heading="Where the app helps—and where judgment remains yours." faqs={faqs} id="beginner-questions" />
+
+  <section class="entry-close section-block">
+    <div class="container entry-close-inner">
+      <div>
+        <p class="entry-eyebrow">If you want more structure</p>
+        <h2>Start from a visible plan, then make it yours.</h2>
+      </div>
+      <StoreLinks label="Download the Maatriks beginner workout app" />
+    </div>
+  </section>
+
+  <EntryRelated
+    heading="Use the part that answers your next question."
+    id="beginner-next"
+    related={[
+      { href: '/workout-planner-app', label: 'Planning', title: 'See how the starting program is built' },
+      { href: '/exercise-guides', label: 'Movement references', title: 'Browse the current exercise guides' },
+      { href: '/blog/what-to-do-at-gym-beginner', label: 'First sessions', title: 'Prepare for a first week in the gym' },
+    ]}
+  />
+</EntryPageLayout>

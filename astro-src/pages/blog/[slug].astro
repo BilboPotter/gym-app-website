@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { siteConfig } from '../../lib/site.mjs';
 import { loadBlogPosts } from '../../lib/blog.mjs';
+import { blogPostingSchema } from '../../lib/schema.mjs';
 
 export function getStaticPaths() {
   const posts = loadBlogPosts();
@@ -18,11 +19,17 @@ const backLinkHtml = '<a href="/blog" class="blog-back-link">&larr; All posts</a
 ---
 
 <BaseLayout
-  pageTitle={`${post.title} — ${siteConfig.appName}`}
+  pageTitle={`${post.seoTitle || post.title} | ${siteConfig.appName}`}
   pageDescription={post.description}
   canonicalUrl={`${siteConfig.siteUrl}/blog/${post.slug}`}
-  socialImage="/assets/social-blog.png"
-  socialImageAlt={`${siteConfig.appName} journal social preview`}
+  socialImage={post.socialImage || "/assets/social-blog.png"}
+  socialImageAlt={post.socialImageAlt || `${post.title} — Maatriks`}
+  socialTitle={post.seoTitle || post.title}
+  socialType="article"
+  publishedTime={post.date}
+  modifiedTime={post.dateModified}
+  authorName={post.authorName}
+  structuredData={[blogPostingSchema(post)]}
   pageClass="content-page blog-page blog-post-page"
 >
   <section class="blog-article-hero section-block">
@@ -31,7 +38,11 @@ const backLinkHtml = '<a href="/blog" class="blog-back-link">&larr; All posts</a
 
       <div class="blog-card-meta blog-post-meta">
         <span class="blog-kicker">{post.category}</span>
+        <a class="blog-meta-link" href={post.authorPath}>By {post.authorName}</a>
         <time datetime={post.date}>{post.dateLong}</time>
+        {post.dateModified !== post.date && (
+          <time datetime={post.dateModified}>Updated {post.dateModifiedLong}</time>
+        )}
         <span>{post.readingTimeLabel}</span>
       </div>
 
@@ -48,9 +59,25 @@ const backLinkHtml = '<a href="/blog" class="blog-back-link">&larr; All posts</a
       <div class="blog-article-layout">
         <aside class="blog-article-side" aria-label="Article metadata">
           <div class="blog-side-block">
+            <p class="blog-feature-label">Author</p>
+            <p><a href={post.authorPath}>{post.authorName}</a></p>
+          </div>
+          <div class="blog-side-block">
             <p class="blog-feature-label">Published</p>
             <p>{post.dateLong}</p>
           </div>
+          {post.dateModified !== post.date && (
+            <div class="blog-side-block">
+              <p class="blog-feature-label">Last updated</p>
+              <p>{post.dateModifiedLong}</p>
+            </div>
+          )}
+          {post.reviewedDateLong && (
+            <div class="blog-side-block">
+              <p class="blog-feature-label">Sources checked</p>
+              <p>{post.reviewedDateLong}</p>
+            </div>
+          )}
           <div class="blog-side-block">
             <p class="blog-feature-label">Category</p>
             <p>{post.category}</p>

@@ -1,0 +1,42 @@
+---
+import ExerciseGuide from '../../components/ExerciseGuide.astro';
+---
+
+<ExerciseGuide
+  path="/exercise-guides/barbell-bench-press"
+  name="Barbell Bench Press"
+  description="A barbell press that Maatriks labels for the chest, with the triceps and front delts also involved."
+  pageDescription="Watch the Barbell Bench Press movement loop and read a restrained setup and execution reference alongside the exercise information shown in Maatriks."
+  video="/assets/barbell-bench-press.mp4"
+  poster="/assets/barbell-bench-press.webp"
+  primaryMuscles={['Chest']}
+  secondaryMuscles={['Triceps', 'Front delts']}
+  equipment="Barbell"
+  level="Intermediate"
+  setupHeading="Build a bench setup you can maintain."
+  setupIntro="Bench, rack, grip, and foot positions can differ. Choose positions that feel stable and match any individual instruction you follow."
+  setupSteps={[
+    'Set up on the bench so the bar can be unracked and returned to the rack with control.',
+    'Choose a grip and foot position that give you a stable base for the variation you are performing.',
+    'Set your upper back and wrists in positions you can maintain before moving the bar.',
+  ]}
+  executionHeading="Control the bar through the press."
+  executionIntro="The exact touch point and path depend on the person and variation, so this reference does not prescribe one angle to everyone."
+  executionSteps={[
+    'Lower the bar under control through a comfortable path you can maintain.',
+    'Pause or reverse the movement according to the bench-press variation you are performing.',
+    'Press back to the starting position with control, then reset before the next repetition.',
+  ]}
+  productHeading="Bring the bench-press reference back to the workout."
+  productCopy="Open the movement loop and labels from the exercise screen, then return to the active session where the planned warm-ups and working sets remain visible."
+  productImage="/assets/product-exercise-bench.jpg"
+  productAlt="Barbell Bench Press exercise screen in Maatriks with movement image and muscle labels"
+  relatedHeading="See another movement or take the press into the session."
+  related={[
+    { href: '/exercise-guides/barbell-squat', label: 'Another movement', title: 'Barbell Squat' },
+    { href: '/gym-workout-tracker', label: 'Active workout', title: 'Track bench-press sets, reps, and weight' },
+    { href: '/workout-planner-app', label: 'Program', title: 'See how exercises reach the workout' },
+  ]}
+  socialImage="/assets/social-barbell-bench-press-guide.png"
+  routeClass="entry-page--bench"
+/>

@@ -1,0 +1,163 @@
+---
+import EntryFaq from '../components/entry/EntryFaq.astro';
+import EntryPageLayout from '../components/entry/EntryPageLayout.astro';
+import EntryRelated from '../components/entry/EntryRelated.astro';
+import ProductMedia from '../components/entry/ProductMedia.astro';
+import StoreLinks from '../components/entry/StoreLinks.astro';
+
+const path = '/gym-workout-tracker';
+const pageTitle = 'Gym Workout Tracker for Weights, Sets and Reps | Maatriks';
+const pageDescription = 'Open a prepared workout and track warm-ups, working sets, weights, reps, timed exercises, swaps, and additions in one gym log.';
+const faqs = [
+  {
+    question: 'Can I track timed exercises as well as weights and reps?',
+    answer: 'Yes. A timed set has its own target and built-in timer, and the completed duration is saved beside that exercise.',
+  },
+  {
+    question: 'Does swapping an exercise change my saved program?',
+    answer: 'No. A swap made during the workout is saved in that session record. Editing the program is a separate action.',
+  },
+];
+---
+
+<EntryPageLayout
+  path={path}
+  pageTitle={pageTitle}
+  pageDescription={pageDescription}
+  socialImage="/assets/social-gym-workout-tracker.png"
+  socialImageAlt="Maatriks active gym workout tracker for weights, sets, and reps"
+  faqs={faqs}
+  routeClass="entry-page--tracker"
+>
+  <section class="entry-hero section-block">
+    <div class="container entry-hero-grid">
+      <div class="entry-hero-copy reveal">
+        <p class="entry-eyebrow">Gym workout tracker</p>
+        <h1>The workout is already there.</h1>
+        <p class="entry-lead">
+          Open the session with its planned exercises and targets in place. Record the weights, repetitions, and time you complete without rebuilding the workout between sets.
+        </p>
+        <StoreLinks />
+      </div>
+      <ProductMedia
+        src="/assets/product-workout-active.jpg"
+        alt="Active Maatriks Full Body A workout with planned and completed Barbell Bench Press sets"
+        width="828"
+        height="1709"
+        presentation="phone"
+        priority={true}
+        mediaClass="entry-hero-phone"
+      />
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--paired section-block" aria-labelledby="tracker-plan-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">During the session</p>
+        <h2 id="tracker-plan-title">Planned beside performed.</h2>
+      </div>
+      <div class="entry-record-comparison reveal" aria-label="How a workout target becomes a completed record">
+        <div><span>Planned</span><strong>6 reps · 47.5 kg</strong><p>The target stays visible before the set.</p></div>
+        <span aria-hidden="true">→</span>
+        <div><span>Performed</span><strong>Your saved result</strong><p>Record the values you actually complete.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--proof section-block" aria-labelledby="tracker-change-title">
+    <div class="container entry-proof-layout entry-proof-layout--reverse">
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">When the gym changes the plan</p>
+        <h2 id="tracker-change-title">Change the session you are in.</h2>
+        <p>
+          Swap a planned movement or add another exercise without abandoning the workout. The session record follows what you did; the saved program remains a separate thing to edit deliberately.
+        </p>
+        <dl class="entry-inline-facts">
+          <div><dt>Swap</dt><dd>Replace a movement for this session.</dd></div>
+          <div><dt>Add</dt><dd>Include work that was not planned.</dd></div>
+          <div><dt>Keep</dt><dd>Submit one complete workout record.</dd></div>
+        </dl>
+      </div>
+      <ProductMedia
+        src="/assets/product-workout-active.jpg"
+        alt="Maatriks active workout with exercise swap controls and set logging"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--tracker-types section-block" aria-labelledby="tracker-types-title">
+    <div class="container">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">One session record</p>
+        <h2 id="tracker-types-title">Weight, reps, and time belong together.</h2>
+      </div>
+      <div class="entry-proof-grid">
+        <article class="entry-proof-tile reveal">
+          <ProductMedia
+            src="/assets/product-workout-active.jpg"
+            alt="Maatriks weight and repetition logging in an active workout"
+            width="828"
+            height="1709"
+            presentation="crop"
+          />
+          <div><h3>Resistance work</h3><p>Keep warm-ups and working sets distinct while recording kilograms and reps.</p></div>
+        </article>
+        <article class="entry-proof-tile reveal">
+          <ProductMedia
+            src="/assets/product-timed-exercise-active.jpg"
+            alt="Maatriks timed Hand Plank set running toward a thirty-second target"
+            width="828"
+            height="1709"
+            presentation="crop"
+          />
+          <div><h3>Timed work</h3><p>Run the clock from the set and save the duration with the exercise.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--summary section-block" aria-labelledby="tracker-summary-title">
+    <div class="container entry-proof-layout">
+      <ProductMedia
+        src="/assets/product-workout-summary.jpg"
+        alt="Maatriks post-workout summary with completed work, volume, and feedback"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">After the final set</p>
+        <h2 id="tracker-summary-title">Finish with the record intact.</h2>
+        <p>
+          Submit the session to review what you completed, including volume and session context. Post-workout feedback is shown after the underlying work, not used to rewrite it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <EntryFaq heading="How the workout record behaves." faqs={faqs} id="tracker-questions" />
+
+  <section class="entry-close section-block">
+    <div class="container entry-close-inner">
+      <div>
+        <p class="entry-eyebrow">Bring the plan with you</p>
+        <h2>Track the session without losing its structure.</h2>
+      </div>
+      <StoreLinks label="Download the Maatriks gym workout tracker" />
+    </div>
+  </section>
+
+  <EntryRelated
+    heading="Go deeper into the tools beside the log."
+    id="tracker-next"
+    related={[
+      { href: '/workout-timers', label: 'Timed work', title: 'Use the timer inside a set' },
+      { href: '/auto-progression', label: 'Next session', title: 'Understand Auto-progression' },
+      { href: '/blog/workout-logging-that-doesnt-get-in-the-way', label: 'Logging guide', title: 'Keep the record without interrupting the workout' },
+    ]}
+  />
+</EntryPageLayout>

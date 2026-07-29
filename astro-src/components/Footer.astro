@@ -14,12 +14,29 @@ import { siteConfig } from '../lib/site.mjs';
         <a href={`mailto:${siteConfig.supportEmail}`} class="footer-email">{siteConfig.supportEmail}</a>
         <p class="footer-copy">&copy; 2026 {siteConfig.companyName}. All rights reserved.</p>
       </div>
-      <ul class="footer-links">
-        <li><a href={siteConfig.privacyUrl}>Privacy</a></li>
-        <li><a href={siteConfig.termsUrl}>Terms</a></li>
-        <li><a href={siteConfig.supportUrl}>Support</a></li>
-        <li><a href="/blog">Blog</a></li>
-      </ul>
+      <div class="footer-nav-groups">
+        <div>
+          <p class="footer-nav-label">Features</p>
+          <ul class="footer-links">
+            <li><a href="/workout-planner-app">Workout planner</a></li>
+            <li><a href="/gym-workout-tracker">Gym tracker</a></li>
+            <li><a href="/auto-progression">Auto-progression</a></li>
+            <li><a href="/workout-timers">Workout timers</a></li>
+            <li><a href="/beginner-workout-app">For beginners</a></li>
+            <li><a href="/exercise-guides">Exercise guides</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-nav-label">Maatriks</p>
+          <ul class="footer-links">
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/authors/maatriks-team">Maatriks Team</a></li>
+            <li><a href={siteConfig.supportUrl}>Support</a></li>
+            <li><a href={siteConfig.privacyUrl}>Privacy</a></li>
+            <li><a href={siteConfig.termsUrl}>Terms</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </footer>

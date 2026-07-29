@@ -1,0 +1,141 @@
+---
+import EntryPageLayout from './entry/EntryPageLayout.astro';
+import EntryRelated from './entry/EntryRelated.astro';
+import ProductMedia from './entry/ProductMedia.astro';
+import StoreLinks from './entry/StoreLinks.astro';
+
+const {
+  path,
+  name,
+  description,
+  pageDescription,
+  video,
+  poster,
+  primaryMuscles,
+  secondaryMuscles,
+  equipment,
+  level,
+  setupHeading,
+  setupIntro,
+  setupSteps,
+  executionHeading,
+  executionIntro,
+  executionSteps,
+  productHeading,
+  productCopy,
+  productImage,
+  productAlt,
+  relatedHeading,
+  related,
+  socialImage,
+  routeClass = '',
+} = Astro.props;
+
+const pageTitle = `${name} Exercise Guide | Maatriks`;
+---
+
+<EntryPageLayout
+  path={path}
+  pageTitle={pageTitle}
+  pageDescription={pageDescription}
+  socialImage={socialImage}
+  socialImageAlt={`${name} movement demonstration in Maatriks`}
+  routeClass={`entry-page--exercise-guide ${routeClass}`.trim()}
+>
+  <section class="entry-guide-hero section-block">
+    <div class="container">
+      <a class="blog-back-link" href="/exercise-guides">← Exercise guides</a>
+      <div class="entry-guide-hero-grid">
+        <div class="entry-guide-copy reveal">
+          <p class="entry-eyebrow">{equipment} movement</p>
+          <h1>{name}</h1>
+          <p class="entry-lead">{description}</p>
+          <dl class="entry-guide-facts">
+            <div><dt>Primary label</dt><dd>{primaryMuscles.join(', ')}</dd></div>
+            <div><dt>Also labeled</dt><dd>{secondaryMuscles.join(', ')}</dd></div>
+            <div><dt>Equipment</dt><dd>{equipment}</dd></div>
+            <div><dt>Maatriks level</dt><dd>{level}</dd></div>
+          </dl>
+          <p class="entry-provenance">Maintained by Maatriks Team · Product content checked July 29, 2026</p>
+        </div>
+
+        <ProductMedia
+          type="video"
+          src={video}
+          poster={poster}
+          alt={`Looping ${name} movement demonstration`}
+          width="1080"
+          height="604"
+          presentation="landscape"
+          priority={true}
+          caption={`${name} movement loop shown in Maatriks`}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--guide-setup section-block" aria-labelledby="guide-setup-title">
+    <div class="container entry-instruction-layout">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">Before the repetition</p>
+        <h2 id="guide-setup-title">{setupHeading}</h2>
+        <p>{setupIntro}</p>
+      </div>
+      <ol class="entry-instruction-list">
+        {setupSteps.map((step, index) => (
+          <li class="reveal"><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--guide-execution section-block" aria-labelledby="guide-execution-title">
+    <div class="container entry-instruction-layout">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">During the movement</p>
+        <h2 id="guide-execution-title">{executionHeading}</h2>
+        <p>{executionIntro}</p>
+      </div>
+      <ol class="entry-instruction-list">
+        {executionSteps.map((step, index) => (
+          <li class="reveal"><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--guide-product section-block" aria-labelledby="guide-product-title">
+    <div class="container entry-proof-layout">
+      <ProductMedia
+        src={productImage}
+        alt={productAlt}
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">In the app</p>
+        <h2 id="guide-product-title">{productHeading}</h2>
+        <p>{productCopy}</p>
+        <StoreLinks label={`Download Maatriks for the ${name} reference`} />
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--guide-boundary section-block" aria-labelledby="guide-boundary-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">General reference</p>
+        <h2 id="guide-boundary-title">Your setup may need different details.</h2>
+      </div>
+      <div class="entry-copy-stack reveal">
+        <p class="entry-copy-large">
+          This page cannot account for your body, equipment, mobility, injury history, pain, or individual instruction.
+        </p>
+        <p>Use qualified individual guidance when those factors affect how you perform the movement.</p>
+      </div>
+    </div>
+  </section>
+
+  <EntryRelated heading={relatedHeading} related={related} id="guide-next" />
+</EntryPageLayout>

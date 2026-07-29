@@ -1,0 +1,42 @@
+---
+import ExerciseGuide from '../../components/ExerciseGuide.astro';
+---
+
+<ExerciseGuide
+  path="/exercise-guides/barbell-squat"
+  name="Barbell Squat"
+  description="A back-loaded barbell movement that Maatriks labels for the quadriceps, with the glutes and hamstrings also involved."
+  pageDescription="Watch the Barbell Squat movement loop and read a restrained setup and execution reference alongside the exercise information shown in Maatriks."
+  video="/assets/barbell-squat.mp4"
+  poster="/assets/barbell-squat.webp"
+  primaryMuscles={['Quadriceps']}
+  secondaryMuscles={['Glutes', 'Hamstrings']}
+  equipment="Barbell"
+  level="Intermediate"
+  setupHeading="Create a stable squat setup."
+  setupIntro="Use a rack, bar position, and stance that you can control and that fit any individual instruction you follow."
+  setupSteps={[
+    'Set the rack height and bar position so you can unrack and return the bar with control.',
+    'Choose a stance and foot position that feel stable for your current mobility and setup.',
+    'Brace before beginning the repetition, then take the space you need to move clear of the rack.',
+  ]}
+  executionHeading="Keep the repetition controlled."
+  executionIntro="The exact range and position can vary. Use a version you can maintain without forcing a universal depth or stance."
+  executionSteps={[
+    'Lower under control through a comfortable range you can maintain.',
+    'Keep the bar balanced over a stable base of support as you change direction.',
+    'Stand back up with control, then reset your position and brace before the next repetition.',
+  ]}
+  productHeading="Open the squat before the working set."
+  productCopy="The Maatriks exercise screen keeps the movement loop, muscle labels, and general reference together. Return to the workout to record the set you perform."
+  productImage="/assets/product-exercise-squat.jpg"
+  productAlt="Barbell Squat exercise screen in Maatriks with movement image and muscle labels"
+  relatedHeading="Continue with another reference or record the set."
+  related={[
+    { href: '/exercise-guides/barbell-bench-press', label: 'Another movement', title: 'Barbell Bench Press' },
+    { href: '/gym-workout-tracker', label: 'Active workout', title: 'Track squat sets, reps, and weight' },
+    { href: '/beginner-workout-app', label: 'Structured start', title: 'See movement references beside a plan' },
+  ]}
+  socialImage="/assets/social-barbell-squat-guide.png"
+  routeClass="entry-page--squat"
+/>

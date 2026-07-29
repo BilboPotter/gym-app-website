@@ -272,17 +272,155 @@ function renderCard({
   writeCard({ fileName, svg });
 }
 
+function renderFeatureCard({
+  fileName,
+  label,
+  titleLines,
+  description,
+  imageFile = null,
+  imageMimeType = 'image/jpeg',
+  landscape = false,
+  rules = [],
+}) {
+  const lockupHref = svgDataUri(BRAND_LOCKUP);
+  const imageHref = imageFile
+    ? binaryDataUri(path.join(ASSETS, imageFile), imageMimeType)
+    : null;
+  const title = titleLines
+    .map((line, index) => `<tspan x="76" dy="${index === 0 ? 0 : 78}">${escapeXml(line)}</tspan>`)
+    .join('');
+  const visual = imageHref
+    ? landscape
+      ? `<rect x="736" y="180" width="400" height="250" rx="24" fill="#0c0c10" stroke="rgba(255,138,31,0.34)" stroke-width="2"/>
+  <image href="${imageHref}" x="750" y="194" width="372" height="222" preserveAspectRatio="xMidYMid slice" clip-path="url(#landscapeClip)"/>`
+      : `<rect x="842" y="76" width="250" height="494" rx="42" fill="#050507" stroke="rgba(255,138,31,0.34)" stroke-width="2"/>
+  <image href="${imageHref}" x="856" y="90" width="222" height="466" preserveAspectRatio="xMidYMin slice" clip-path="url(#phoneClip)"/>`
+    : `<g transform="translate(744 138)">
+  <rect width="384" height="354" rx="24" fill="rgba(10,10,15,0.94)" stroke="rgba(255,138,31,0.34)" stroke-width="2"/>
+  <text x="28" y="48" fill="#ff8a1f" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="600" letter-spacing="2.8">CLEAR RULES · VISIBLE CHANGES</text>
+  ${rules.map((rule, index) => `<g transform="translate(28 ${88 + index * 82})">
+    <text x="0" y="20" fill="#ff8a1f" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="700">0${index + 1}</text>
+    <text x="52" y="20" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="23" font-weight="700">${escapeXml(rule)}</text>
+    <line x1="0" y1="50" x2="328" y2="50" stroke="rgba(255,255,255,0.09)"/>
+  </g>`).join('')}
+</g>`;
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="${escapeXml(label)} social card">
+  <defs>
+    <linearGradient id="bgWash" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#171117"/>
+      <stop offset="48%" stop-color="#0b0c10"/>
+      <stop offset="100%" stop-color="#07080b"/>
+    </linearGradient>
+    <linearGradient id="edgeGlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff8a1f"/>
+      <stop offset="100%" stop-color="#ffb347"/>
+    </linearGradient>
+    <radialGradient id="amberGlow" cx="78%" cy="35%" r="46%">
+      <stop offset="0%" stop-color="rgba(255,138,31,0.20)"/>
+      <stop offset="100%" stop-color="rgba(255,138,31,0)"/>
+    </radialGradient>
+    <pattern id="dotGrid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.1" fill="#292932"/>
+    </pattern>
+    <clipPath id="phoneClip"><rect x="856" y="90" width="222" height="466" rx="30"/></clipPath>
+    <clipPath id="landscapeClip"><rect x="750" y="194" width="372" height="222" rx="14"/></clipPath>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bgWash)"/>
+  <rect width="1200" height="630" fill="url(#dotGrid)" opacity="0.45"/>
+  <rect width="1200" height="630" fill="url(#amberGlow)"/>
+  <rect width="1200" height="10" fill="url(#edgeGlow)"/>
+  <image href="${lockupHref}" x="76" y="58" width="268" height="52"/>
+  <text x="76" y="164" fill="#ff8a1f" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="700" letter-spacing="4.4">${escapeXml(label)}</text>
+  <text x="76" y="248" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="68" font-weight="800" letter-spacing="-3.2">${title}</text>
+  <text x="76" y="505" fill="#b9b9c3" font-family="'DM Sans', sans-serif" font-size="26" font-weight="500">${escapeXml(description)}</text>
+  <text x="76" y="570" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="600" letter-spacing="2.2">MAATRIKS.AI</text>
+  ${visual}
+</svg>`;
+
+  writeCard({ fileName, svg });
+}
+
 renderHomeCard();
 
 renderCard({
   fileName: 'social-blog',
   label: 'JOURNAL',
   titleLines: [
-    'Training software',
-    'should change after',
-    'the session.',
+    'Train with',
+    'a clearer plan.',
   ],
-  description: 'Notes on adaptive programming, product decisions, and systems that respond to what actually happened.',
+  description: 'Practical training guides and current product notes.',
   footer: 'maatriks.ai/blog',
-  accentTitle: 'Essays and product notes',
+  accentTitle: 'Guides and product notes',
+});
+
+renderFeatureCard({
+  fileName: 'social-workout-planner-app',
+  label: 'WORKOUT PLANNER APP',
+  titleLines: ['Your workout', 'is ready.'],
+  description: 'Start with a structured program. Keep control.',
+  imageFile: 'product-onboarding.jpg',
+});
+
+renderFeatureCard({
+  fileName: 'social-gym-workout-tracker',
+  label: 'GYM WORKOUT TRACKER',
+  titleLines: ['Track the work,', 'not the admin.'],
+  description: 'Weights, sets, reps, warm-ups, and time.',
+  imageFile: 'product-workout-active.jpg',
+});
+
+renderFeatureCard({
+  fileName: 'social-auto-progression',
+  label: 'AUTO-PROGRESSION',
+  titleLines: ['Know what to', 'aim for next.'],
+  description: 'Optional, deterministic, and visible.',
+  rules: ['Completed work', 'Rep-range rules', 'Next target'],
+});
+
+renderFeatureCard({
+  fileName: 'social-workout-timers',
+  label: 'WORKOUT TIMERS',
+  titleLines: ['Keep the clock', 'in the workout.'],
+  description: 'Timed exercises and rest, saved in place.',
+  imageFile: 'product-timed-exercise-active.jpg',
+});
+
+renderFeatureCard({
+  fileName: 'social-beginner-workout-app',
+  label: 'BEGINNER WORKOUT APP',
+  titleLines: ['Know what to do', 'at the gym.'],
+  description: 'A plan, movement guidance, and a clear log.',
+  imageFile: 'product-exercise-squat.jpg',
+});
+
+renderFeatureCard({
+  fileName: 'social-exercise-guides',
+  label: 'EXERCISE GUIDES',
+  titleLines: ['See the movement', 'before the set.'],
+  description: 'Looping demonstrations inside the workout.',
+  imageFile: 'barbell-squat.webp',
+  imageMimeType: 'image/webp',
+  landscape: true,
+});
+
+renderFeatureCard({
+  fileName: 'social-barbell-squat-guide',
+  label: 'EXERCISE GUIDE',
+  titleLines: ['Barbell', 'Squat'],
+  description: 'Movement, muscles, and how-to steps.',
+  imageFile: 'barbell-squat.webp',
+  imageMimeType: 'image/webp',
+  landscape: true,
+});
+
+renderFeatureCard({
+  fileName: 'social-barbell-bench-press-guide',
+  label: 'EXERCISE GUIDE',
+  titleLines: ['Barbell', 'Bench Press'],
+  description: 'Movement, muscles, and how-to steps.',
+  imageFile: 'barbell-bench-press.webp',
+  imageMimeType: 'image/webp',
+  landscape: true,
 });

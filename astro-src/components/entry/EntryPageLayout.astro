@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { faqSchema, webPageSchema } from '../../lib/schema.mjs';
+import { siteConfig } from '../../lib/site.mjs';
+
+const {
+  path,
+  pageTitle,
+  pageDescription,
+  socialImage,
+  socialImageAlt,
+  faqs = [],
+  routeClass = '',
+} = Astro.props;
+
+const structuredData = [
+  webPageSchema({ path, name: pageTitle, description: pageDescription }),
+  ...(faqs.length > 0 ? [faqSchema(faqs)] : []),
+];
+---
+
+<BaseLayout
+  pageTitle={pageTitle}
+  pageDescription={pageDescription}
+  canonicalUrl={`${siteConfig.siteUrl}${path}`}
+  socialTitle={pageTitle}
+  socialDescription={pageDescription}
+  socialImage={socialImage}
+  socialImageAlt={socialImageAlt}
+  structuredData={structuredData}
+  pageClass={`entry-page ${routeClass}`.trim()}
+>
+  <slot />
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+const {
+  heading,
+  intro = '',
+  related = [],
+  id = 'next',
+} = Astro.props;
+---
+
+<section class="entry-section entry-section--related section-block" aria-labelledby={`${id}-title`}>
+  <div class="container">
+    <div class="entry-section-head">
+      <h2 id={`${id}-title`}>{heading}</h2>
+      {intro && <p>{intro}</p>}
+    </div>
+    <div class="entry-related-grid">
+      {related.map((item) => (
+        <a href={item.href}>
+          <span>
+            <small>{item.label}</small>
+            <strong>{item.title}</strong>
+          </span>
+          <span aria-hidden="true">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

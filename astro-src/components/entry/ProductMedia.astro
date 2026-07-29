@@ -1,0 +1,59 @@
+---
+const {
+  type = 'image',
+  src,
+  poster = '',
+  alt,
+  width,
+  height,
+  presentation = 'phone',
+  priority = false,
+  caption = '',
+  mediaClass = '',
+} = Astro.props;
+---
+
+<figure class:list={['entry-product-media', `entry-product-media--${presentation}`, mediaClass]}>
+  {
+    type === 'video' ? (
+      <div class="entry-video-frame">
+        <img
+          src={poster}
+          alt={alt}
+          width={width}
+          height={height}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchpriority={priority ? 'high' : 'auto'}
+        />
+        <video
+          class="exercise-video"
+          data-exercise-video
+          width={width}
+          height={height}
+          muted
+          loop
+          playsinline
+          autoplay
+          preload="none"
+          poster={poster}
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <source data-src={src} type="video/mp4" />
+        </video>
+      </div>
+    ) : (
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+        fetchpriority={priority ? 'high' : 'auto'}
+      />
+    )
+  }
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

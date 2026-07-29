@@ -1,0 +1,157 @@
+---
+import LegacyPartial from '../components/LegacyPartial.astro';
+import EntryFaq from '../components/entry/EntryFaq.astro';
+import EntryPageLayout from '../components/entry/EntryPageLayout.astro';
+import EntryRelated from '../components/entry/EntryRelated.astro';
+import ProductMedia from '../components/entry/ProductMedia.astro';
+import StoreLinks from '../components/entry/StoreLinks.astro';
+
+const path = '/workout-timers';
+const pageTitle = 'Workout Timers Built Into Your Training Log | Maatriks';
+const pageDescription = 'Run timed exercises and optional warm-up rest countdowns inside an active workout, then save the completed duration with the set.';
+const faqs = [
+  {
+    question: 'Is this a standalone interval timer?',
+    answer: 'No. The timers are part of the active workout: one for time-based exercise sets and separate rest countdowns around logged work.',
+  },
+  {
+    question: 'Can warm-up rest be turned off?',
+    answer: 'Yes. Warm-up rest is optional. You can adjust, minimize, skip, or disable that countdown.',
+  },
+  {
+    question: 'What happens if I continue past the target?',
+    answer: 'The target is marked when you reach it, but the timed set can continue. Finishing saves the completed duration.',
+  },
+];
+---
+
+<EntryPageLayout
+  path={path}
+  pageTitle={pageTitle}
+  pageDescription={pageDescription}
+  socialImage="/assets/social-workout-timers.png"
+  socialImageAlt="Maatriks timed exercise with an in-workout progress ring"
+  faqs={faqs}
+  routeClass="entry-page--timers"
+>
+  <section class="entry-hero entry-timers-hero section-block">
+    <div class="container entry-hero-grid">
+      <div class="entry-hero-copy reveal">
+        <p class="entry-eyebrow">Workout timers</p>
+        <h1>Keep the clock inside the workout.</h1>
+        <p class="entry-lead">
+          Start a time-based set from the exercise you are logging. The ring advances with every second, marks the target, and keeps counting until you finish.
+        </p>
+        <StoreLinks />
+      </div>
+
+      <div class="entry-timer-demo reveal">
+        <p class="entry-live-label">Live timed set · 30-second target</p>
+        <div
+          class="device entry-timer-phone"
+          role="img"
+          aria-label="Maatriks Hand Plank timer counting to a thirty-second target and continuing to thirty-five seconds"
+        >
+          <div class="device-inner">
+            <LegacyPartial name="phone-timed-exercise" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--timer-start section-block" aria-labelledby="timer-start-title">
+    <div class="container entry-proof-layout">
+      <ProductMedia
+        src="/assets/product-timed-exercise-setup.jpg"
+        alt="Maatriks Hand Plank sets with thirty-second targets and start timer controls"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">No separate clock</p>
+        <h2 id="timer-start-title">Start from the set you are logging.</h2>
+        <p>
+          A timed exercise keeps its minute-and-second target beside each set. Start the timer there, without switching to another app or losing your place in the workout.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--timer-target section-block" aria-labelledby="timer-target-title">
+    <div class="container entry-split">
+      <div class="entry-section-head reveal">
+        <p class="entry-eyebrow">Target reached</p>
+        <h2 id="timer-target-title">The goal is a moment, not a forced stop.</h2>
+      </div>
+      <div class="entry-timer-sequence reveal" aria-label="How the timed-set target behaves">
+        <div><strong>0:00</strong><span>Start the set</span></div>
+        <span aria-hidden="true">→</span>
+        <div class="entry-timer-sequence-target"><strong>0:30</strong><span>The ring completes and responds</span></div>
+        <span aria-hidden="true">→</span>
+        <div><strong>0:35</strong><span>Finish when the work ends</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--timer-save section-block" aria-labelledby="timer-save-title">
+    <div class="container entry-proof-layout entry-proof-layout--reverse">
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">Your result</p>
+        <h2 id="timer-save-title">Finish saves. Quit discards.</h2>
+        <p>
+          Finish the timer to write the completed duration back to that set. Quit when the attempt should not become part of the workout record.
+        </p>
+      </div>
+      <ProductMedia
+        src="/assets/product-timed-exercise-demo-saved.jpg"
+        alt="Maatriks timed Hand Plank result saved back to the active workout"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+    </div>
+  </section>
+
+  <section class="entry-section entry-section--warmup section-block" aria-labelledby="warmup-rest-title">
+    <div class="container entry-proof-layout">
+      <ProductMedia
+        src="/assets/product-warmup-rest-timer.jpg"
+        alt="Maatriks warm-up rest countdown with minus five seconds, plus five seconds, and skip controls"
+        width="828"
+        height="1709"
+        presentation="phone"
+      />
+      <div class="entry-proof-copy reveal">
+        <p class="entry-eyebrow">Separate from timed exercise sets</p>
+        <h2 id="warmup-rest-title">Warm-up rest is its own countdown.</h2>
+        <p>
+          When enabled, warm-up rest can begin after a completed warm-up. Adjust it by five seconds, minimize it, skip it, or turn the feature off in settings.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <EntryFaq heading="Two clocks, two distinct jobs." faqs={faqs} id="timer-questions" />
+
+  <section class="entry-close section-block">
+    <div class="container entry-close-inner">
+      <div>
+        <p class="entry-eyebrow">Stay in the set</p>
+        <h2>Put the timer beside the work it records.</h2>
+      </div>
+      <StoreLinks label="Download Maatriks workout timers" />
+    </div>
+  </section>
+
+  <EntryRelated
+    heading="See where timed work fits in the session."
+    id="timer-next"
+    related={[
+      { href: '/gym-workout-tracker', label: 'Workout record', title: 'Track weights, reps, and timed sets' },
+      { href: '/exercise-guides', label: 'Movement references', title: 'Open the exercise before the set' },
+      { href: '/blog/workout-logging-that-doesnt-get-in-the-way', label: 'Logging guide', title: 'Keep the tools from interrupting the workout' },
+    ]}
+  />
+</EntryPageLayout>

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LegacyPartial from '../components/LegacyPartial.astro';
 import { siteConfig } from '../lib/site.mjs';
+import { faqSchema, homepageSchema } from '../lib/schema.mjs';
 
 const homepageTitle = 'Maatriks — Your Workout, Clearly Planned';
 const homepageDescription = 'Maatriks builds your workout, shows every movement, tracks what you complete, and offers optional Auto-progression for your next targets.';
@@ -9,7 +10,7 @@ const homepageSocialDescription = 'Plan the session, see every movement, log wha
 const homepageFaqs = [
   {
     question: 'Do I need gym experience?',
-    answer: 'No. Maatriks uses your experience, schedule, available equipment, and goals to create a starting program. You can open any exercise for a demonstration and clear instructions, then edit the program as you learn what works for you.',
+    answer: 'No. Maatriks uses your experience, schedule, training focus, session length, and movement exclusions to create a starting program. You can open any exercise for a demonstration and clear instructions, then edit the program as you learn what works for you.',
   },
   {
     question: 'Does Maatriks progress my workouts automatically?',
@@ -29,38 +30,8 @@ const homepageFaqs = [
   },
 ];
 const homepageStructuredData = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Maatriks',
-    applicationCategory: 'HealthApplication',
-    operatingSystem: 'iOS, Android',
-    description: homepageDescription,
-    url: 'https://maatriks.ai',
-    author: {
-      '@type': 'Organization',
-      name: 'Riverin OÜ',
-      url: 'https://maatriks.ai',
-    },
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-    },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: homepageFaqs.map(({ question, answer }) => ({
-      '@type': 'Question',
-      name: question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: answer,
-      },
-    })),
-  },
+  homepageSchema(homepageDescription),
+  faqSchema(homepageFaqs),
 ];
 ---
 
@@ -126,7 +97,7 @@ const homepageStructuredData = [
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            Set your schedule, experience, available equipment, and goals. Maatriks turns those answers into a starting
+            Set your schedule, experience, training focus, session length, and movement exclusions. Maatriks turns those answers into a starting
             program you can edit whenever you need.
           </p>
         </div>
@@ -145,7 +116,7 @@ const homepageStructuredData = [
             <dl class="journey-facts">
               <div class="journey-fact">
                 <dt>Input</dt>
-                <dd>Schedule, experience, equipment, and goals.</dd>
+                <dd>Schedule, experience, focus, session length, and exclusions.</dd>
               </div>
               <div class="journey-fact">
                 <dt>System</dt>

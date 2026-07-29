@@ -1,0 +1,9 @@
+---
+import LegacyPartial from '../LegacyPartial.astro';
+
+const { label = 'Download Maatriks' } = Astro.props;
+---
+
+<nav class="entry-store-links" aria-label={label}>
+  <LegacyPartial name="store-badges" />
+</nav>

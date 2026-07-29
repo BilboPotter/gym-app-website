@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { loadBlogPosts } from './astro-src/lib/blog.mjs';
+import { getStaticSeoPages } from './astro-src/lib/seo-pages.mjs';
 
 const ROOT = process.cwd();
 const DIST = path.join(ROOT, 'astro-dist');
@@ -29,6 +30,18 @@ function readFile(relativePath, encoding = 'utf8') {
 
 function assertExists(relativePath) {
   readFile(relativePath);
+}
+
+function routeToHtmlPath(routePath) {
+  if (routePath === '/') {
+    return 'index.html';
+  }
+
+  return path.join(routePath.replace(/^\/+|\/+$/g, ''), 'index.html');
+}
+
+function absoluteUrl(routePath) {
+  return `${CONFIG.siteUrl}${routePath}`;
 }
 
 function resolveScriptFileFromPage(relativeHtmlPath, scriptNamePrefix) {
@@ -65,6 +78,10 @@ function verifyHtmlRoutes() {
     'blog/index.html',
   ];
 
+  getStaticSeoPages().forEach((page) => {
+    htmlFiles.push(routeToHtmlPath(page.path));
+  });
+
   htmlFiles.forEach(assertExists);
 }
 
@@ -100,6 +117,14 @@ function verifyStaticArtifacts() {
     'apple-app-site-association',
     'assets/social-home.png',
     'assets/social-blog.png',
+    'assets/social-workout-planner-app.png',
+    'assets/social-gym-workout-tracker.png',
+    'assets/social-auto-progression.png',
+    'assets/social-workout-timers.png',
+    'assets/social-beginner-workout-app.png',
+    'assets/social-exercise-guides.png',
+    'assets/social-barbell-squat-guide.png',
+    'assets/social-barbell-bench-press-guide.png',
   ].forEach(assertExists);
 
   const cname = readFile('CNAME').trim();
@@ -112,15 +137,405 @@ function verifyStaticArtifacts() {
   );
 
   const sitemap = readFile('sitemap.xml');
-  [
-    `${CONFIG.siteUrl}/`,
-    `${CONFIG.siteUrl}/privacy`,
-    `${CONFIG.siteUrl}/terms`,
-    `${CONFIG.siteUrl}/support`,
-    `${CONFIG.siteUrl}/blog`,
-  ].forEach((url) => {
+  getStaticSeoPages().map((page) => absoluteUrl(page.path)).forEach((url) => {
     assert(sitemap.includes(`<loc>${url}</loc>`), `sitemap.xml is missing ${url}`);
   });
+}
+
+function extractTagValue(html, pattern, description, relativePath) {
+  const match = html.match(pattern);
+  assert(match?.[1], `${relativePath} is missing ${description}`);
+  return match[1].trim();
+}
+
+function extractJsonLd(html, relativePath) {
+  return [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
+    .map((match) => {
+      try {
+        return JSON.parse(match[1]);
+      } catch (error) {
+        throw new Error(`Invalid JSON-LD in ${relativePath}: ${error.message}`);
+      }
+    });
+}
+
+function flattenSchemaTypes(value, types = []) {
+  if (!value || typeof value !== 'object') {
+    return types;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((entry) => flattenSchemaTypes(entry, types));
+    return types;
+  }
+
+  if (value['@type']) {
+    const entries = Array.isArray(value['@type']) ? value['@type'] : [value['@type']];
+    types.push(...entries);
+  }
+
+  if (Array.isArray(value['@graph'])) {
+    value['@graph'].forEach((entry) => flattenSchemaTypes(entry, types));
+  }
+
+  return types;
+}
+
+function findSchemaByType(entries, expectedType) {
+  for (const entry of entries) {
+    if (entry?.['@type'] === expectedType) {
+      return entry;
+    }
+
+    if (Array.isArray(entry?.['@type']) && entry['@type'].includes(expectedType)) {
+      return entry;
+    }
+
+    if (Array.isArray(entry?.['@graph'])) {
+      const nested = findSchemaByType(entry['@graph'], expectedType);
+      if (nested) {
+        return nested;
+      }
+    }
+  }
+
+  return null;
+}
+
+function verifySeoOutput() {
+  const posts = loadBlogPosts();
+  const indexableEntries = [
+    ...getStaticSeoPages().map((page) => ({
+      routePath: page.path,
+      lastModified: page.lastModified,
+      type: page.path.startsWith('/blog/') ? 'article' : 'page',
+    })),
+    ...posts.map((post) => ({
+      routePath: `/blog/${post.slug}`,
+      lastModified: post.dateModified,
+      type: 'article',
+      post,
+    })),
+  ];
+  const routeSet = new Set(indexableEntries.map((entry) => entry.routePath));
+  const titles = new Map();
+  const descriptions = new Map();
+
+  indexableEntries.forEach((entry) => {
+    const relativePath = routeToHtmlPath(entry.routePath);
+    const html = readFile(relativePath);
+    const title = extractTagValue(html, /<title>([\s\S]*?)<\/title>/i, 'a title', relativePath);
+    const description = extractTagValue(
+      html,
+      /<meta name="description" content="([^"]+)"/i,
+      'a meta description',
+      relativePath,
+    );
+    const canonical = extractTagValue(
+      html,
+      /<link rel="canonical" href="([^"]+)"/i,
+      'a canonical link',
+      relativePath,
+    );
+    const h1Count = (html.match(/<h1(?:\s|>)/gi) || []).length;
+
+    assert(canonical === absoluteUrl(entry.routePath), `Unexpected canonical in ${relativePath}: ${canonical}`);
+    assert(h1Count === 1, `${relativePath} must contain exactly one h1; found ${h1Count}`);
+    assert(!titles.has(title), `Duplicate title in ${relativePath} and ${titles.get(title)}: ${title}`);
+    assert(
+      !descriptions.has(description),
+      `Duplicate description in ${relativePath} and ${descriptions.get(description)}`,
+    );
+    titles.set(title, relativePath);
+    descriptions.set(description, relativePath);
+
+    const socialType = extractTagValue(
+      html,
+      /<meta property="og:type" content="([^"]+)"/i,
+      'an Open Graph type',
+      relativePath,
+    );
+    assert(
+      socialType === (entry.type === 'article' ? 'article' : 'website'),
+      `Unexpected Open Graph type in ${relativePath}: ${socialType}`,
+    );
+
+    const schemas = extractJsonLd(html, relativePath);
+    const serializedSchemas = JSON.stringify(schemas);
+    assert(!serializedSchemas.includes('aggregateRating'), `Unverified aggregateRating in ${relativePath}`);
+    assert(!serializedSchemas.includes('"review"'), `Unverified review schema in ${relativePath}`);
+
+    if (entry.type === 'article') {
+      const posting = findSchemaByType(schemas, 'BlogPosting');
+      assert(posting, `Missing BlogPosting schema in ${relativePath}`);
+      assert(posting.author?.name === 'Maatriks Team', `Missing Maatriks Team author in ${relativePath}`);
+      assert(posting.datePublished === entry.post.date, `Incorrect datePublished in ${relativePath}`);
+      assert(posting.dateModified === entry.post.dateModified, `Incorrect dateModified in ${relativePath}`);
+      assert(
+        html.includes('href="/authors/maatriks-team"'),
+        `Missing visible author link in ${relativePath}`,
+      );
+    }
+
+    for (const match of html.matchAll(/<img\b([^>]*)>/gi)) {
+      const attributes = match[1];
+      assert(/\balt="[^"]*"/i.test(attributes), `Image without alt in ${relativePath}`);
+      assert(/\bwidth="[^"]+"/i.test(attributes), `Image without width in ${relativePath}`);
+      assert(/\bheight="[^"]+"/i.test(attributes), `Image without height in ${relativePath}`);
+    }
+
+    for (const match of html.matchAll(/href="(\/[^"#?]*)[^"]*"/gi)) {
+      const linkedPath = match[1].replace(/\/+$/, '') || '/';
+      if (linkedPath.startsWith('/assets/') || linkedPath.startsWith('/styles/') || linkedPath.startsWith('/scripts/')) {
+        continue;
+      }
+
+      assert(
+        routeSet.has(linkedPath)
+          || [
+            '/delete-account',
+            '/forgot-password',
+            '/update-password',
+            '/auth/callback',
+            '/blog/feed.xml',
+            '/sitemap.xml',
+            '/favicon.svg',
+          ].includes(linkedPath),
+        `Broken or unregistered internal link in ${relativePath}: ${linkedPath}`,
+      );
+    }
+  });
+
+  const homeSchemas = extractJsonLd(readFile('index.html'), 'index.html');
+  const homeTypes = flattenSchemaTypes(homeSchemas);
+  for (const requiredType of ['Organization', 'WebSite', 'SoftwareApplication', 'MobileApplication']) {
+    assert(homeTypes.includes(requiredType), `Homepage schema is missing ${requiredType}`);
+  }
+  const application = findSchemaByType(homeSchemas, 'SoftwareApplication');
+  assert(application, 'Homepage schema is missing the SoftwareApplication entity');
+  assert(
+    Array.isArray(application.installUrl)
+      && application.installUrl.includes(CONFIG.iosAppStoreUrl)
+      && application.installUrl.includes(CONFIG.googlePlayUrl),
+    'Homepage application schema is missing the configured store install URLs',
+  );
+
+  for (const routePath of [
+    '/workout-planner-app',
+    '/gym-workout-tracker',
+    '/auto-progression',
+    '/workout-timers',
+    '/beginner-workout-app',
+    '/exercise-guides',
+  ]) {
+    const html = readFile(routeToHtmlPath(routePath));
+    assert(
+      html.includes(`href="${CONFIG.iosAppStoreUrl}"`),
+      `${routePath} is missing the configured App Store link`,
+    );
+    assert(
+      html.includes(`href="${CONFIG.googlePlayUrl}"`),
+      `${routePath} is missing the configured Google Play link`,
+    );
+  }
+
+  const sitemap = readFile('sitemap.xml');
+  const sitemapEntries = [...sitemap.matchAll(
+    /<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g,
+  )].map((match) => ({ url: match[1], lastModified: match[2] }));
+  assert(
+    sitemapEntries.length === indexableEntries.length,
+    `Expected ${indexableEntries.length} sitemap entries, found ${sitemapEntries.length}`,
+  );
+  indexableEntries.forEach((entry) => {
+    const sitemapEntry = sitemapEntries.find((candidate) => candidate.url === absoluteUrl(entry.routePath));
+    assert(sitemapEntry, `Sitemap is missing ${entry.routePath}`);
+    assert(
+      sitemapEntry.lastModified === entry.lastModified,
+      `Incorrect sitemap lastmod for ${entry.routePath}: ${sitemapEntry.lastModified}`,
+    );
+    assert(
+      /^\d{4}-\d{2}-\d{2}$/.test(sitemapEntry.lastModified),
+      `Invalid sitemap lastmod for ${entry.routePath}`,
+    );
+  });
+
+  const rss = readFile('blog/feed.xml');
+  assert(rss.includes('xmlns:dc="http://purl.org/dc/elements/1.1/"'), 'RSS is missing the dc namespace');
+  posts.forEach((post) => {
+    assert(
+      rss.includes(`<dc:creator>${post.authorName}</dc:creator>`),
+      `RSS is missing creator for ${post.slug}`,
+    );
+  });
+
+  const generatedContent = indexableEntries
+    .map((entry) => readFile(routeToHtmlPath(entry.routePath)))
+    .join('\n');
+  for (const stalePhrase of [
+    'I tested seven apps',
+    'Every session informs the next',
+    'adjusts when things go off-plan',
+    'weights adjusted if the app thinks',
+  ]) {
+    assert(!generatedContent.includes(stalePhrase), `Stale claim found in generated HTML: ${stalePhrase}`);
+  }
+}
+
+function visibleHeadingText(html, tagName) {
+  return [...html.matchAll(new RegExp(`<${tagName}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tagName}>`, 'gi'))]
+    .map((match) => match[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim());
+}
+
+function verifyEntryPageQuality() {
+  const routes = {
+    '/workout-planner-app': {
+      proof: ['product-onboarding.jpg', 'product-workout-active.jpg'],
+      headings: [
+        'Built around the week you give it.',
+        'See the session before you start it.',
+        'Change the plan without starting over.',
+        'From setup to the gym.',
+      ],
+    },
+    '/gym-workout-tracker': {
+      proof: ['product-workout-active.jpg', 'product-timed-exercise-active.jpg', 'product-workout-summary.jpg'],
+      headings: [
+        'Planned beside performed.',
+        'Change the session you are in.',
+        'Weight, reps, and time belong together.',
+        'Finish with the record intact.',
+      ],
+    },
+    '/auto-progression': {
+      proof: ['data-auto-progression-graph', 'Clear rules · visible changes'],
+      headings: [
+        'One completed set, one visible next step.',
+        'What changes—and what stays manual.',
+        'Target changes are not AI feedback.',
+      ],
+    },
+    '/workout-timers': {
+      proof: ['data-timed-exercise-demo', 'data-target-seconds="30"', 'data-finish-seconds="35"'],
+      headings: [
+        'Start from the set you are logging.',
+        'The goal is a moment, not a forced stop.',
+        'Finish saves. Quit discards.',
+        'Warm-up rest is its own countdown.',
+      ],
+    },
+    '/beginner-workout-app': {
+      proof: ['product-workout-active.jpg', 'barbell-squat.mp4', 'product-workout-summary.jpg'],
+      headings: [
+        'See what the session contains.',
+        'Open a movement before you try it.',
+        'Use the plan—or edit it.',
+        'Record the session and review it.',
+      ],
+    },
+    '/exercise-guides': {
+      proof: ['barbell-squat.mp4', 'barbell-bench-press.mp4', 'Maintained by Maatriks Team'],
+      headings: [
+        'Choose a movement.',
+        'A short reference, not a coaching claim.',
+        'Keep the reference connected to the exercise.',
+      ],
+    },
+    '/exercise-guides/barbell-squat': {
+      proof: ['barbell-squat.mp4', 'product-exercise-squat.jpg', 'Maintained by Maatriks Team'],
+      headings: [
+        'Create a stable squat setup.',
+        'Keep the repetition controlled.',
+        'Open the squat before the working set.',
+      ],
+    },
+    '/exercise-guides/barbell-bench-press': {
+      proof: ['barbell-bench-press.mp4', 'product-exercise-bench.jpg', 'Maintained by Maatriks Team'],
+      headings: [
+        'Build a bench setup you can maintain.',
+        'Control the bar through the press.',
+        'Bring the bench-press reference back to the workout.',
+      ],
+    },
+  };
+  const genericPhrases = [
+    'Inside the app',
+    'What you can do',
+    'From opening the app to finishing the work',
+    'What to know',
+    'Keep exploring',
+    'Related guides and features',
+    'Real exercise media used inside the current app',
+    'The current Maatriks guide labels',
+  ];
+  const unreasonableClaims = [
+    'stop guessing',
+    'never feel lost',
+    'perfect form',
+    'prevents injury',
+    'guaranteed progress',
+    'the right workout for everyone',
+  ];
+  const headingSequences = new Map();
+
+  Object.entries(routes).forEach(([routePath, contract]) => {
+    const relativePath = routeToHtmlPath(routePath);
+    const html = readFile(relativePath);
+    const headings = visibleHeadingText(html, 'h2');
+    const headingSequence = headings.join(' | ');
+
+    assert(!headingSequences.has(headingSequence), `${routePath} duplicates the H2 sequence from ${headingSequences.get(headingSequence)}`);
+    headingSequences.set(headingSequence, routePath);
+
+    contract.headings.forEach((heading) => {
+      assert(headings.includes(heading), `${routePath} is missing its route-specific heading: ${heading}`);
+    });
+    contract.proof.forEach((proof) => {
+      assert(html.includes(proof), `${routePath} is missing required product proof: ${proof}`);
+    });
+    genericPhrases.forEach((phrase) => {
+      assert(!html.includes(phrase), `${routePath} still contains generic template copy: ${phrase}`);
+    });
+    unreasonableClaims.forEach((claim) => {
+      assert(!html.toLowerCase().includes(claim), `${routePath} contains an unreasonable claim: ${claim}`);
+    });
+
+    assert(!html.includes('feature-page'), `${routePath} still renders the retired generic feature page class`);
+  });
+
+  for (const routePath of [
+    '/workout-planner-app',
+    '/gym-workout-tracker',
+    '/auto-progression',
+    '/workout-timers',
+    '/beginner-workout-app',
+    '/exercise-guides',
+  ]) {
+    const html = readFile(routeToHtmlPath(routePath));
+    assert(
+      html.split(`href="${CONFIG.iosAppStoreUrl}"`).length - 1 === 2,
+      `${routePath} must contain exactly one hero and one closing App Store link`,
+    );
+    assert(
+      html.split(`href="${CONFIG.googlePlayUrl}"`).length - 1 === 2,
+      `${routePath} must contain exactly one hero and one closing Google Play link`,
+    );
+  }
+
+  for (const routePath of [
+    '/exercise-guides',
+    '/exercise-guides/barbell-squat',
+    '/exercise-guides/barbell-bench-press',
+  ]) {
+    const html = readFile(routeToHtmlPath(routePath));
+    assert(html.includes('data-exercise-video'), `${routePath} is missing live exercise media`);
+    assert(html.includes('poster="/assets/barbell-'), `${routePath} is missing an exercise-video poster fallback`);
+  }
+
+  assert(
+    !fs.existsSync(path.join(ROOT, 'astro-src', 'components', 'FeatureLanding.astro')),
+    'The retired FeatureLanding component still exists',
+  );
 }
 
 function verifyAssetFingerprinting() {
@@ -680,6 +1095,8 @@ function main() {
   verifyBlogPosts();
   verifyStaticArtifacts();
   verifyAssetFingerprinting();
+  verifySeoOutput();
+  verifyEntryPageQuality();
 
   verifyAuthPage({
     htmlPath: 'auth/callback/index.html',

@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { siteConfig } from '../astro-src/lib/site.mjs';
 import { loadBlogPosts } from '../astro-src/lib/blog.mjs';
+import { getStaticSeoPages } from '../astro-src/lib/seo-pages.mjs';
 
 const ROOT = process.cwd();
 const DIST = path.join(ROOT, 'astro-dist');
@@ -46,6 +47,19 @@ function removeFile(relativePath) {
   }
 }
 
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function absoluteUrl(routePath) {
+  return `${siteConfig.siteUrl}${routePath}`;
+}
+
 function main() {
   const aliasRoutes = [
     'terms/index.html',
@@ -71,18 +85,23 @@ function main() {
   writeFile('.nojekyll', '');
 
   const posts = loadBlogPosts();
-  const sitemapUrls = [
-    `${siteConfig.siteUrl}/`,
-    `${siteConfig.siteUrl}/privacy`,
-    `${siteConfig.siteUrl}/terms`,
-    `${siteConfig.siteUrl}/support`,
-    `${siteConfig.siteUrl}/blog`,
-    ...posts.map((post) => `${siteConfig.siteUrl}/blog/${post.slug}`),
+  const sitemapEntries = [
+    ...getStaticSeoPages().map((page) => ({
+      url: absoluteUrl(page.path),
+      lastModified: page.lastModified,
+    })),
+    ...posts.map((post) => ({
+      url: `${siteConfig.siteUrl}/blog/${post.slug}`,
+      lastModified: post.dateModified,
+    })),
   ];
 
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapUrls.map((url) => `  <url><loc>${url}</loc></url>`).join('\n')}
+${sitemapEntries.map(({ url, lastModified }) => `  <url>
+    <loc>${escapeXml(url)}</loc>
+    <lastmod>${lastModified}</lastmod>
+  </url>`).join('\n')}
 </urlset>`;
   writeFile('sitemap.xml', sitemapXml);
 
