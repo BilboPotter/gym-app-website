@@ -14,6 +14,10 @@ function svgDataUri(filePath) {
   return `data:image/svg+xml;base64,${Buffer.from(content).toString('base64')}`;
 }
 
+function binaryDataUri(filePath, mimeType) {
+  return `data:${mimeType};base64,${fs.readFileSync(filePath).toString('base64')}`;
+}
+
 function escapeXml(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -46,8 +50,9 @@ function writeCard({ fileName, svg }) {
 
 function renderHomeCard() {
   const lockupHref = svgDataUri(BRAND_LOCKUP);
+  const productScreenHref = binaryDataUri(path.join(ASSETS, 'product-exercise-bench.jpg'), 'image/jpeg');
 
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="maatriks homepage social card">
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Maatriks homepage social card">
   <defs>
     <linearGradient id="bgWash" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#121015"/>
@@ -80,6 +85,9 @@ function renderHomeCard() {
     <pattern id="gridDots" width="28" height="28" patternUnits="userSpaceOnUse">
       <circle cx="2" cy="2" r="1.1" fill="#24242c"/>
     </pattern>
+    <clipPath id="homePhoneScreen">
+      <rect x="16" y="16" width="226" height="480" rx="34"/>
+    </clipPath>
   </defs>
 
   <rect width="1200" height="630" fill="url(#bgWash)"/>
@@ -92,7 +100,7 @@ function renderHomeCard() {
 
   <image href="${lockupHref}" x="84" y="58" width="284" height="55"/>
 
-  <text x="84" y="156" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="19" font-weight="600" letter-spacing="4.8">ADAPTIVE WORKOUT APP</text>
+  <text x="84" y="156" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="19" font-weight="600" letter-spacing="4.8">YOUR WORKOUT, CLEARLY PLANNED</text>
 
   <text x="84" y="244" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="76" font-weight="800" letter-spacing="-3.6">
     <tspan x="84" dy="0">Just show up.</tspan>
@@ -100,7 +108,7 @@ function renderHomeCard() {
     <tspan x="84" dy="84">the plan.</tspan>
   </text>
 
-  <text x="84" y="496" fill="#c7c7d2" font-family="'DM Sans', sans-serif" font-size="30" font-weight="500" letter-spacing="-0.4">Personalized workouts that adapt after every session.</text>
+  <text x="84" y="496" fill="#c7c7d2" font-family="'DM Sans', sans-serif" font-size="28" font-weight="500" letter-spacing="-0.4">Guidance, logging, and optional Auto-progression.</text>
 
   <g transform="translate(84 536)">
     <rect x="0" y="0" width="96" height="38" rx="19" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)"/>
@@ -108,7 +116,7 @@ function renderHomeCard() {
     <rect x="200" y="0" width="96" height="38" rx="19" fill="rgba(255,138,31,0.14)" stroke="rgba(255,179,71,0.22)"/>
     <text x="48" y="24" fill="#f2f2f7" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="500" text-anchor="middle" letter-spacing="1.8">PLAN</text>
     <text x="148" y="24" fill="#f2f2f7" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="500" text-anchor="middle" letter-spacing="1.8">LOG</text>
-    <text x="248" y="24" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="600" text-anchor="middle" letter-spacing="1.8">ADAPT</text>
+    <text x="248" y="24" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="600" text-anchor="middle" letter-spacing="1.8">NEXT</text>
   </g>
 
   <g transform="translate(808 70)">
@@ -153,9 +161,9 @@ function renderHomeCard() {
 
       <g transform="translate(30 286)">
         <rect width="182" height="72" rx="18" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)"/>
-        <text x="18" y="26" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.6">COACH REVIEW</text>
-        <text x="18" y="49" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="17" font-weight="700">Adjusts after</text>
-        <text x="18" y="69" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="17" font-weight="700">what you log</text>
+        <text x="18" y="26" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.6">AUTO-PROGRESSION</text>
+        <text x="18" y="49" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="17" font-weight="700">Optional next</text>
+        <text x="18" y="69" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="17" font-weight="700">target changes</text>
         <text x="156" y="44" fill="#ffb347" font-family="'DM Sans', sans-serif" font-size="18" font-weight="700">→</text>
       </g>
 
@@ -178,6 +186,9 @@ function renderHomeCard() {
         <text x="20" y="26" fill="#120b05" font-family="'DM Sans', sans-serif" font-size="15" font-weight="800">Start session</text>
         <text x="150" y="26" fill="#120b05" font-family="'DM Sans', sans-serif" font-size="18" font-weight="800">→</text>
       </g>
+
+      <image href="${productScreenHref}" x="16" y="16" width="226" height="480" preserveAspectRatio="xMidYMin slice" clip-path="url(#homePhoneScreen)"/>
+      <rect x="87" y="16" width="84" height="22" rx="0 0 16 16" fill="#050507"/>
     </g>
   </g>
 

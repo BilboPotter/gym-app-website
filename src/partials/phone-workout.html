@@ -1,5 +1,19 @@
 {{> phone-status-system}}
 
-<div class="screen screen--screenshot-image">
-  <img class="device-screenshot" src="/assets/app-preview-workout-home.jpg" alt="" width="720" height="1452" fetchpriority="high" decoding="async" />
+<div class="screen screen--screenshot-image screen--exercise-live">
+  <img class="device-screenshot" src="/assets/product-exercise-bench.jpg" alt="" width="828" height="1709" fetchpriority="high" decoding="async" />
+  <div class="exercise-video-frame" aria-hidden="true">
+    <video
+      class="exercise-video"
+      data-exercise-video
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="/assets/barbell-bench-press.webp"
+      tabindex="-1">
+      <source data-src="/assets/barbell-bench-press.mp4" type="video/mp4" />
+    </video>
+  </div>
 </div>

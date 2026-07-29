@@ -3,19 +3,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import LegacyPartial from '../components/LegacyPartial.astro';
 import { siteConfig } from '../lib/site.mjs';
 
-const leftArrowHtml = '&larr;';
-const rightArrowHtml = '&rarr;';
-const homepageTitle = 'maatriks — Workout App That Adapts to You';
-const homepageDescription = 'maatriks builds a personalized workout plan, tracks what you actually did, and adjusts your next session automatically. Simple enough for beginners, smart enough for experienced lifters.';
-const homepageSocialDescription = 'maatriks builds your workout plan, tracks what you actually did, and adjusts your next session automatically. Easy to use. Hard to outgrow.';
+const homepageTitle = 'Maatriks — Your Workout, Clearly Planned';
+const homepageDescription = 'Maatriks builds your workout, shows every movement, tracks what you complete, and offers optional Auto-progression for your next targets.';
+const homepageSocialDescription = 'Plan the session, see every movement, log what happened, and turn on Auto-progression when you want the next target calculated for you.';
+const homepageFaqs = [
+  {
+    question: 'Do I need gym experience?',
+    answer: 'No. Maatriks uses your experience, schedule, available equipment, and goals to create a starting program. You can open any exercise for a demonstration and clear instructions, then edit the program as you learn what works for you.',
+  },
+  {
+    question: 'Does Maatriks progress my workouts automatically?',
+    answer: 'It can. Auto-progression is optional. When it is on, Maatriks uses your completed working sets and saved rep ranges to calculate the next targets and shows you what changed. This is separate from AI post-workout feedback.',
+  },
+  {
+    question: 'Can I change an exercise during a workout?',
+    answer: 'Yes. You can swap a planned exercise or add another exercise during the session. What you complete is saved in the workout record.',
+  },
+  {
+    question: 'Does AI decide my next workout?',
+    answer: 'No. AI writes post-workout feedback. Your program remains editable, and optional Auto-progression uses deterministic rules for target changes.',
+  },
+  {
+    question: 'Can I edit my program?',
+    answer: 'Yes. You can edit program details and workouts, use templates, add custom exercises, and adopt a program shared with you.',
+  },
+];
 const homepageStructuredData = [
   {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'maatriks',
+    name: 'Maatriks',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'iOS, Android',
-    description: 'Adaptive workout programming app that builds personalized plans, tracks real performance, and adjusts automatically after every session. Works for any experience level.',
+    description: homepageDescription,
     url: 'https://maatriks.ai',
     author: {
       '@type': 'Organization',
@@ -26,54 +46,20 @@ const homepageStructuredData = [
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'USD',
-      availability: 'https://schema.org/ComingSoon',
+      availability: 'https://schema.org/InStock',
     },
   },
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'Do I need gym experience to use maatriks?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: "No. Tell it your schedule and goals, and it builds your first workout from there. You do not need to know exercises or programming. The app handles that. Experienced lifters get the same adaptive engine without managing their own spreadsheets.",
-        },
+    mainEntity: homepageFaqs.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: answer,
       },
-      {
-        '@type': 'Question',
-        name: 'How does the app know what to change after each workout?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'It uses what you actually logged — sets, reps, weight, and any swaps you made. If you went heavier, it adjusts up. If you cut a session short, it adapts. Every workout informs the next one.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Can I change exercises during a workout?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. Swap anything mid-session and the app treats it as part of the record. Your plan adjusts based on what you actually did, not what was originally scheduled.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Is this a fixed workout plan or does it change?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'It changes. You start with a structured plan based on your setup, but after each session the app reviews what happened and adjusts what comes next. The longer you use it, the more tailored it gets.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How is this different from a personal trainer?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'A trainer costs 50-120 per session. maatriks gives you a personalized plan that adapts after every workout, with written feedback explaining what changed and why. It is not a human coach, but it pays closer attention than a static app or a spreadsheet.',
-        },
-      },
-    ],
+    })),
   },
 ];
 ---
@@ -83,7 +69,8 @@ const homepageStructuredData = [
   pageDescription={homepageDescription}
   socialTitle={homepageTitle}
   socialDescription={homepageSocialDescription}
-  siteName="maatriks"
+  socialImageAlt="Maatriks homepage preview with the current Barbell Bench Press exercise screen"
+  siteName="Maatriks"
   structuredData={homepageStructuredData}
   canonicalUrl={`${siteConfig.siteUrl}/`}
   mainStyle="padding:0;"
@@ -105,7 +92,7 @@ const homepageStructuredData = [
           sizes="100vw" />
         <img
           src="/assets/hero-gym-desktop-1800.webp"
-          alt="Person training alone in a gym"
+          alt=""
           width="1800"
           height="1005"
           fetchpriority="high"
@@ -121,7 +108,7 @@ const homepageStructuredData = [
         </div>
 
         <div class="hero-phone story-phone" data-snake-anchor>
-          <div class="device" role="img" aria-label="maatriks workout preview for Full Body C showing weekly progress, coach review, and a start session action">
+          <div class="device" role="img" aria-label="Maatriks exercise detail for Barbell Bench Press with a looping movement demonstration and how-to guidance">
             <div class="device-inner">
               <LegacyPartial name="phone-workout" />
             </div>
@@ -133,19 +120,19 @@ const homepageStructuredData = [
     <section class="journey-section journey-section-clean phone-left" id="step-onboard">
       <div class="container journey-inner">
         <div class="journey-header reveal">
-          <div class="step-number">1</div>
+          <div class="step-number"><span aria-hidden="true">01</span><span class="sr-only">Step 1 — Your setup</span></div>
           <h2>Tell us about you</h2>
         </div>
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            How many days can you train? How long are your sessions? What do you want to focus on? Your first week is built
-            from your answers, not a generic template.
+            Set your schedule, experience, available equipment, and goals. Maatriks turns those answers into a starting
+            program you can edit whenever you need.
           </p>
         </div>
 
         <div class="story-phone reveal reveal-left" data-snake-anchor>
-          <div class="device" role="img" aria-label="maatriks onboarding screen asking for training experience level with New selected">
+          <div class="device" role="img" aria-label="Maatriks onboarding screen asking for training experience level with New selected">
             <div class="device-inner">
               <LegacyPartial name="phone-onboarding" />
             </div>
@@ -158,15 +145,15 @@ const homepageStructuredData = [
             <dl class="journey-facts">
               <div class="journey-fact">
                 <dt>Input</dt>
-                <dd>Your schedule, session length, and training goal.</dd>
+                <dd>Schedule, experience, equipment, and goals.</dd>
               </div>
               <div class="journey-fact">
                 <dt>System</dt>
-                <dd>Your first week is shaped by what actually fits your life.</dd>
+                <dd>A structured starting program.</dd>
               </div>
               <div class="journey-fact">
-                <dt>Outcome</dt>
-                <dd>A plan that makes sense from day one, with no guessing what to do.</dd>
+                <dt>You stay in control</dt>
+                <dd>Edit the program whenever you need.</dd>
               </div>
             </dl>
           </div>
@@ -174,27 +161,22 @@ const homepageStructuredData = [
       </div>
     </section>
 
-    <section class="journey-section journey-section-photo phone-right" id="step-log">
-      <picture class="split-photo">
-        <source media="(min-width: 769px)" srcset="/assets/bg-log-workout.webp" />
-        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Person training in a gym" width="1600" height="893" loading="lazy" decoding="async" />
-      </picture>
-
+    <section class="journey-section journey-section-photo journey-section-ambient phone-right" id="step-log">
       <div class="container journey-inner">
         <div class="journey-header reveal">
-          <div class="step-number">2</div>
+          <div class="step-number"><span aria-hidden="true">02</span><span class="sr-only">Step 2 — In the gym</span></div>
           <h2>Track what actually happened</h2>
         </div>
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            Finished early? Swapped an exercise? Went heavier than planned? Log it as it happened. Your next workout adjusts
-            based on what you actually did, not what was scheduled.
+            Log warm-ups, working sets, weight, reps, timed exercises, swaps, and anything you add mid-workout. The session
+            record follows what you did — not only what was planned.
           </p>
         </div>
 
         <div class="story-phone reveal reveal-right" data-snake-anchor>
-          <div class="device" role="img" aria-label="maatriks active workout logging screen for Full Body C with set entry rows for overhead press and Romanian deadlift">
+          <div class="device" role="img" aria-label="Maatriks active Full Body A workout with Barbell Bench Press warm-ups, working sets, weight, and reps">
             <div class="device-inner">
               <LegacyPartial name="phone-workout-leg" />
             </div>
@@ -206,16 +188,16 @@ const homepageStructuredData = [
             <div class="journey-card-label">What this step captures</div>
             <dl class="journey-facts">
               <div class="journey-fact">
-                <dt>Input</dt>
-                <dd>Sets, reps, weight, and any changes you made mid-workout.</dd>
+                <dt>Track</dt>
+                <dd>Warm-ups, working sets, weight, reps, and timed work.</dd>
               </div>
               <div class="journey-fact">
-                <dt>System</dt>
-                <dd>The app separates what you finished, what you skipped, and what you changed.</dd>
+                <dt>Change</dt>
+                <dd>Swap exercises or add one on the spot.</dd>
               </div>
               <div class="journey-fact">
-                <dt>Outcome</dt>
-                <dd>Your next session is built on real data, not an idealized plan.</dd>
+                <dt>Stay moving</dt>
+                <dd>Use built-in rest and exercise timers. Warm-up rest can be switched off.</dd>
               </div>
             </dl>
           </div>
@@ -226,19 +208,19 @@ const homepageStructuredData = [
     <section class="journey-section journey-section-clean journey-section-accent phone-left" id="step-feedback">
       <div class="container journey-inner">
         <div class="journey-header reveal">
-          <div class="step-number">3</div>
-          <h2>See why your plan is changing</h2>
+          <div class="step-number"><span aria-hidden="true">03</span><span class="sr-only">Step 3 — After the session</span></div>
+          <h2>Finish with a clear review</h2>
         </div>
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            After each session, maatriks reviews what you did and explains what it will adjust next time and why. Not generic
-            encouragement. Actual feedback on your actual workout.
+            After you submit, Maatriks turns the session into a clear summary with completed work, volume, new PRs, streak
+            context, and coach-style feedback. Auto-progression stays separate and shows target changes only when it is enabled.
           </p>
         </div>
 
         <div class="story-phone reveal reveal-left" data-snake-anchor>
-          <div class="device" role="img" aria-label="maatriks workout reflection screen showing coach feedback, total volume, exercise stats, and a save and close action">
+          <div class="device" role="img" aria-label="Maatriks workout reflection showing coach-style feedback, total volume, session statistics, and completed exercises">
             <div class="device-inner">
               <LegacyPartial name="phone-feedback" />
             </div>
@@ -247,19 +229,19 @@ const homepageStructuredData = [
 
         <div class="journey-support reveal">
           <div class="card journey-card">
-            <div class="journey-card-label">What this step explains</div>
+            <div class="journey-card-label">What this step reviews</div>
             <dl class="journey-facts">
               <div class="journey-fact">
-                <dt>Input</dt>
-                <dd>Your completed session and recent training history.</dd>
+                <dt>Review</dt>
+                <dd>Completed exercises, volume, and session stats.</dd>
               </div>
               <div class="journey-fact">
-                <dt>System</dt>
-                <dd>The app writes structured notes explaining what worked, what to change, and why.</dd>
+                <dt>Reflect</dt>
+                <dd>Add how the workout felt.</dd>
               </div>
               <div class="journey-fact">
-                <dt>Outcome</dt>
-                <dd>You always know the reason behind your next workout.</dd>
+                <dt>Understand</dt>
+                <dd>Read post-workout feedback without hiding the underlying data.</dd>
               </div>
             </dl>
           </div>
@@ -267,27 +249,22 @@ const homepageStructuredData = [
       </div>
     </section>
 
-    <section class="journey-section journey-section-photo phone-right" id="step-results">
-      <picture class="split-photo">
-        <source media="(min-width: 769px)" srcset="/assets/bg-results.webp" />
-        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Person training in a gym" width="1600" height="894" loading="lazy" decoding="async" />
-      </picture>
-
+    <section class="journey-section journey-section-photo journey-section-ambient phone-right" id="step-results">
       <div class="container journey-inner">
         <div class="journey-header reveal">
-          <div class="step-number">4</div>
-          <h2>Watch yourself get stronger</h2>
+          <div class="step-number"><span aria-hidden="true">04</span><span class="sr-only">Step 4 — Over time</span></div>
+          <h2>Watch the work add up</h2>
         </div>
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            Streaks, personal records, workout history, and progress trends all in one place. No spreadsheet needed. You can
-            see whether the plan is working without doing the math yourself.
+            Your level and XP, weekly streak, workout calendar, and recent sessions keep progress visible without a
+            spreadsheet.
           </p>
         </div>
 
         <div class="story-phone reveal reveal-right" data-snake-anchor>
-          <div class="device" role="img" aria-label="maatriks dashboard showing level progress, calendar history, and recent workouts">
+          <div class="device" role="img" aria-label="Maatriks dashboard showing level progress, weekly streak, workout calendar, and recent activity">
             <div class="device-inner">
               <LegacyPartial name="phone-dashboard" />
             </div>
@@ -299,16 +276,16 @@ const homepageStructuredData = [
             <div class="journey-card-label">What this step surfaces</div>
             <dl class="journey-facts">
               <div class="journey-fact">
-                <dt>Input</dt>
-                <dd>Every workout you have logged.</dd>
+                <dt>See</dt>
+                <dd>Level, XP, and weekly streak.</dd>
               </div>
               <div class="journey-fact">
-                <dt>System</dt>
-                <dd>The dashboard tracks streaks, PRs, volume, and trends automatically.</dd>
+                <dt>Review</dt>
+                <dd>Your workout calendar and recent sessions.</dd>
               </div>
               <div class="journey-fact">
-                <dt>Outcome</dt>
-                <dd>You can see your progress at a glance, and so can the app.</dd>
+                <dt>Return</dt>
+                <dd>Pick up from a clear view of what you have done.</dd>
               </div>
             </dl>
           </div>
@@ -317,47 +294,236 @@ const homepageStructuredData = [
     </section>
   </div>
 
-  <section class="reviews-section section-block" id="reviews">
-    <picture class="split-photo split-photo-left">
-      <source media="(min-width: 769px)" srcset="/assets/bg-reviews.webp" />
-      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Person resting after a workout in a gym" width="1600" height="893" loading="lazy" decoding="async" />
-    </picture>
-
-    <div class="container reviews-layout">
-      <div class="reviews-copy reveal">
-        <div class="section-label">Reviews</div>
-        <h2>What early users are saying</h2>
-        <p>Real beginner problems, plain-language reactions, and exactly the kind of reassurance people look for before they start.</p>
+  <section class="product-proof-section section-block" id="product-proof">
+    <div class="container product-proof-layout">
+      <div class="section-head product-proof-head reveal">
+        <div class="section-label">Inside Maatriks</div>
+        <h2>Your whole workout, in one place</h2>
+        <p>See each movement, log the work as it happens, and finish with a clear record of what you completed.</p>
       </div>
 
-      <div class="reviews-carousel reveal" data-carousel>
-        <div class="reviews-track" data-carousel-track tabindex="0" aria-label="User reviews">
-          <article class="review-card">
-            <div class="review-stars">★★★★★</div>
-            <p>"I used to stand around not knowing what to do next. Now I open the app and my workout is there. It even changed after I couldn't finish last time."</p>
-            <div class="review-author">Anna, new to the gym</div>
-          </article>
-          <article class="review-card">
-            <div class="review-stars">★★★★★</div>
-            <p>"I tracked everything in Google Sheets for two years. This does the same thing but actually adjusts the plan based on what I log. Should have switched earlier."</p>
-            <div class="review-author">Tom, switched from spreadsheets</div>
-          </article>
-          <article class="review-card">
-            <div class="review-stars">★★★★★</div>
-            <p>"Other apps gave me the same workout every week. This one noticed I was getting stronger and added weight. That's all I wanted."</p>
-            <div class="review-author">Laura, tried 3 apps before this</div>
-          </article>
-          <article class="review-card">
-            <div class="review-stars">★★★★★</div>
-            <p>"Can't afford a personal trainer. This is the closest thing I've found. It tells me what to do and explains why when things change."</p>
-            <div class="review-author">Erik, training with no coach</div>
-          </article>
-        </div>
+      <div class="product-proof-grid">
+        <article class="product-proof-card reveal">
+          <div class="product-proof-media product-proof-media--live">
+            <img
+              src="/assets/product-exercise-squat.jpg"
+              alt="Barbell Squat exercise detail showing the demonstration, muscle tags, and how-to steps"
+              width="828"
+              height="1709"
+              loading="lazy"
+              decoding="async" />
+            <div class="proof-video-frame" aria-hidden="true">
+              <video
+                class="exercise-video"
+                data-exercise-video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="none"
+                poster="/assets/barbell-squat.webp"
+                tabindex="-1">
+                <source data-src="/assets/barbell-squat.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+          <div class="product-proof-copy">
+            <div class="product-proof-index">01 / Exercise</div>
+            <h3>Exercise guidance that moves</h3>
+            <p>Open an exercise to see a looping demonstration, the muscles involved, clear how-to steps, and your own history.</p>
+          </div>
+        </article>
 
-        <div class="reviews-controls">
-          <button type="button" class="carousel-button" data-carousel-prev aria-label="Previous review"><Fragment set:html={leftArrowHtml} /></button>
-          <div class="carousel-dots" data-carousel-dots></div>
-          <button type="button" class="carousel-button" data-carousel-next aria-label="Next review"><Fragment set:html={rightArrowHtml} /></button>
+        <article class="product-proof-card reveal">
+          <div class="product-proof-media">
+            <img
+              src="/assets/product-workout-active.jpg"
+              alt="Active Full Body A workout showing exercise thumbnails, warm-ups, working sets, weight, and reps"
+              width="828"
+              height="1709"
+              loading="lazy"
+              decoding="async" />
+          </div>
+          <div class="product-proof-copy">
+            <div class="product-proof-index">02 / Logging</div>
+            <h3>Logging built for the gym</h3>
+            <p>Track warm-ups, working sets, weight, reps, timed work, swaps, rest timers, and exercises you add on the spot.</p>
+          </div>
+        </article>
+
+        <article class="product-proof-card reveal">
+          <div class="product-proof-media">
+            <img
+              src="/assets/product-workout-summary.jpg"
+              alt="Completed workout reflection showing coach-style feedback, total volume, duration, sets, exercises, and PRs"
+              width="828"
+              height="1709"
+              loading="lazy"
+              decoding="async" />
+          </div>
+          <div class="product-proof-copy">
+            <div class="product-proof-index">03 / Review</div>
+            <h3>A clear review after every session</h3>
+            <p>See the work you completed, volume, streak context, new PRs, and coach-style feedback in one reflection-first summary.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="timers-section section-block" id="timers">
+    <div class="container timers-layout">
+      <div class="timers-copy reveal">
+        <div class="section-label">Built-in timing</div>
+        <h2>Keep the clock inside the workout</h2>
+        <p class="lead">
+          Set time-based work directly on an exercise, start the timer without leaving the session, and finish to save
+          the time you actually completed.
+        </p>
+        <p>
+          With warm-up rest enabled, its countdown starts after a completed warm-up. Adjust the countdown, minimize or
+          skip it, or switch the feature off in settings.
+        </p>
+
+        <dl class="timers-facts">
+          <div>
+            <dt>Timed sets</dt>
+            <dd>Targets stay beside the exercise.</dd>
+          </div>
+          <div>
+            <dt>Saved result</dt>
+            <dd>Finish logs the completed time to that set.</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="timers-phone-wrap reveal">
+        <div class="timers-live-label">Live timed set</div>
+        <div
+          class="device timers-phone"
+          role="img"
+          aria-label="Maatriks timed Hand Plank set starting and counting inside the active workout">
+          <div class="device-inner">
+            <LegacyPartial name="phone-timed-exercise" />
+          </div>
+        </div>
+      </div>
+
+      <div class="timers-stills">
+        <figure class="timer-still reveal">
+          <div class="timer-still-media timer-still-media--rest">
+            <img
+              src="/assets/product-warmup-rest-timer.jpg"
+              alt="Warm-up rest timer with controls to adjust, skip, or minimize the countdown"
+              width="828"
+              height="1709"
+              loading="lazy"
+              decoding="async" />
+          </div>
+          <figcaption>
+            <strong>Optional warm-up rest</strong>
+            <span>Adjust, minimize, or skip it. Turn it off in settings.</span>
+          </figcaption>
+        </figure>
+
+        <figure class="timer-still reveal">
+          <div class="timer-still-media timer-still-media--setup">
+            <img
+              src="/assets/product-timed-exercise-setup.jpg"
+              alt="Hand Plank working sets with thirty-second targets and a start timer action for each set"
+              width="828"
+              height="1709"
+              loading="lazy"
+              decoding="async" />
+          </div>
+          <figcaption>
+            <strong>Timed sets in place</strong>
+            <span>Set the target and start from the exercise you are logging.</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="auto-progression-section section-block" id="auto-progression">
+    <div class="auto-progression-graph" data-auto-progression-graph aria-hidden="true">
+      <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="progression-line-gradient" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#e06800" stop-opacity="0.32" />
+            <stop offset="58%" stop-color="#ff8a1f" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#ffd080" />
+          </linearGradient>
+          <linearGradient id="progression-glow-gradient" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#e06800" stop-opacity="0.08" />
+            <stop offset="58%" stop-color="#ff8a1f" stop-opacity="0.18" />
+            <stop offset="100%" stop-color="#ffb347" stop-opacity="0.286" />
+          </linearGradient>
+          <linearGradient id="progression-area-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff8a1f" stop-opacity="0.16" />
+            <stop offset="100%" stop-color="#ff8a1f" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <path
+          class="auto-progression-graph-area"
+          d="M-40 620 C90 600 160 560 250 570 S420 510 510 500 S660 430 735 445 S900 350 980 300 S1110 235 1200 190 L1200 700 L-40 700 Z"
+        />
+        <path
+          class="auto-progression-graph-glow"
+          pathLength="1"
+          d="M-40 620 C90 600 160 560 250 570 S420 510 510 500 S660 430 735 445 S900 350 980 300 S1110 235 1200 190"
+        />
+        <path
+          class="auto-progression-graph-line"
+          pathLength="1"
+          d="M-40 620 C90 600 160 560 250 570 S420 510 510 500 S660 430 735 445 S900 350 980 300 S1110 235 1200 190"
+        />
+        <g class="auto-progression-graph-points">
+          <circle class="auto-progression-graph-point auto-progression-graph-point--one" cx="250" cy="570" r="5" />
+          <circle class="auto-progression-graph-point auto-progression-graph-point--two" cx="735" cy="445" r="5" />
+          <circle class="auto-progression-graph-point auto-progression-graph-point--three" cx="980" cy="300" r="6" />
+        </g>
+      </svg>
+    </div>
+    <div class="container auto-progression-layout">
+      <div class="auto-progression-copy reveal">
+        <div class="section-label">Auto-progression</div>
+        <h2>Know what to aim for next</h2>
+        <p class="lead">
+          Maatriks calculates the next target from the working sets you complete and the rep range saved in your program.
+          Clear rules decide the change, and you can see it before the next session.
+        </p>
+        <p>Auto-progression is optional and can be switched on or off in your program settings.</p>
+      </div>
+
+      <div class="auto-progression-flow reveal" aria-label="How Auto-progression calculates a next target">
+        <div class="auto-progression-status">Clear rules · Visible changes</div>
+        <ol>
+          <li>
+            <span class="auto-progression-step">01</span>
+            <div>
+              <strong>Completed work</strong>
+              <p>Use the working sets you actually finished.</p>
+            </div>
+          </li>
+          <li>
+            <span class="auto-progression-step">02</span>
+            <div>
+              <strong>Rep-range rules</strong>
+              <p>Compare the result with the range saved in your program.</p>
+            </div>
+          </li>
+          <li>
+            <span class="auto-progression-step">03</span>
+            <div>
+              <strong>Next target</strong>
+              <p>Show the calculated change before the next session.</p>
+            </div>
+          </li>
+        </ol>
+        <div class="auto-progression-separation">
+          <span>Your program</span>
+          <strong>A clear next step</strong>
         </div>
       </div>
     </div>
@@ -371,55 +537,19 @@ const homepageStructuredData = [
       </div>
 
       <div class="faq-list reveal">
-        <details class="faq-item">
-          <summary>
-            <span>Do I need gym experience to use maatriks?</span>
-            <span class="faq-icon" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-answer">
-            <p>No. Tell it your schedule and goals, and it builds your first workout from there. You do not need to know exercises or programming. The app handles that. Experienced lifters get the same adaptive engine without managing their own spreadsheets.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span>How does the app know what to change after each workout?</span>
-            <span class="faq-icon" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-answer">
-            <p>It uses what you actually logged: sets, reps, weight, and any swaps you made. If you went heavier, it adjusts up. If you cut a session short, it adapts. Every workout informs the next one.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span>Can I change exercises during a workout?</span>
-            <span class="faq-icon" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-answer">
-            <p>Yes. Swap anything mid-session and the app treats it as part of the record. Your plan adjusts based on what you actually did, not what was originally scheduled.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span>Is this a fixed workout plan or does it change?</span>
-            <span class="faq-icon" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-answer">
-            <p>It changes. You start with a structured plan based on your setup, but after each session the app reviews what happened and adjusts what comes next. The longer you use it, the more tailored it gets.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span>How is this different from a personal trainer?</span>
-            <span class="faq-icon" aria-hidden="true"></span>
-          </summary>
-          <div class="faq-answer">
-            <p>A trainer costs 50-120 per session. maatriks gives you a personalized plan that adapts after every workout, with written feedback explaining what changed and why. It is not a human coach, but it pays closer attention than a static app or a spreadsheet.</p>
-          </div>
-        </details>
+        {
+          homepageFaqs.map(({ question, answer }) => (
+            <details class="faq-item">
+              <summary>
+                <span>{question}</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq-answer">
+                <p>{answer}</p>
+              </div>
+            </details>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -428,14 +558,11 @@ const homepageStructuredData = [
     <div class="container newsletter-inner reveal">
       <div class="section-label">Newsletter</div>
       <h2>Get training tips that actually help</h2>
-      <p>Simple advice for getting stronger, app updates, and early access to new features. One email a week, no spam.</p>
-
-      <form class="newsletter-form" data-newsletter-form>
-        <label class="sr-only" for="newsletter-email">Email address</label>
-        <input id="newsletter-email" name="email" type="email" placeholder="you@domain.com" autocomplete="email" required />
-        <button type="submit" class="btn btn-primary">Join Newsletter</button>
-      </form>
-      <p class="newsletter-note" data-newsletter-note></p>
+      <p>Training ideas and product updates are on the way. Signup will open here once the mailing list is ready.</p>
+      <div class="newsletter-status" role="status">
+        <span class="newsletter-status-dot" aria-hidden="true"></span>
+        Signup coming soon
+      </div>
     </div>
   </section>
 
@@ -443,7 +570,10 @@ const homepageStructuredData = [
     <div class="container download-inner reveal">
       <div class="section-label">Download</div>
       <h2>Your first workout is one setup away</h2>
-      <p>Download maatriks, answer a few questions, and get a plan built for you. It gets smarter every session.</p>
+      <p>
+        Download Maatriks, answer a few questions, and start with a program you can edit. Turn on Auto-progression when
+        you want the app to calculate your next targets.
+      </p>
 
       <div class="download-actions">
         <LegacyPartial name="store-badges" />

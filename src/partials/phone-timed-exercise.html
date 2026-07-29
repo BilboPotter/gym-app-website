@@ -1,0 +1,87 @@
+{{> phone-status-system}}
+
+<div
+  class="screen screen--screenshot-image screen--timed-demo"
+  data-timed-exercise-demo
+  data-target-seconds="30"
+  data-finish-seconds="35"
+  data-setup-delay-ms="800"
+  data-result-delay-ms="3200">
+  <picture class="device-screenshot timed-exercise-underlay">
+    <source media="(max-width: 768px)" srcset="/assets/product-timed-exercise-active.jpg" />
+    <img
+      src="/assets/product-timed-exercise-demo-start.jpg"
+      alt=""
+      width="828"
+      height="1709"
+      loading="lazy"
+      decoding="async" />
+  </picture>
+  <picture class="device-screenshot timed-exercise-saved-still">
+    <source media="(max-width: 768px)" srcset="/assets/product-timed-exercise-active.jpg" />
+    <img
+      src="/assets/product-timed-exercise-demo-saved.jpg"
+      alt=""
+      width="828"
+      height="1709"
+      loading="lazy"
+      decoding="async" />
+  </picture>
+  <img
+    class="device-screenshot timed-exercise-mobile-still"
+    src="/assets/product-timed-exercise-active.jpg"
+    alt=""
+    width="828"
+    height="1709"
+    loading="lazy"
+    decoding="async" />
+  <span class="timed-exercise-saved-seconds" data-timed-exercise-saved-seconds>35</span>
+
+  <div class="timed-exercise-demo-layer" aria-hidden="true">
+    <div class="timed-exercise-demo-modal">
+      <div class="timed-exercise-heading">
+        <span class="timed-exercise-name">Hand Plank</span>
+        <span class="timed-exercise-target" data-timed-exercise-target>Target · 0:30</span>
+      </div>
+
+      <div class="timed-exercise-dial">
+        <svg
+          class="timed-exercise-dial-art"
+          viewBox="0 0 252 252"
+          focusable="false"
+          aria-hidden="true">
+          <circle class="timed-exercise-dial-center" cx="126" cy="126" r="112" />
+          <circle class="timed-exercise-dial-track" cx="126" cy="126" r="119" />
+          <circle
+            class="timed-exercise-dial-progress"
+            data-timed-exercise-progress
+            cx="126"
+            cy="126"
+            r="119"
+            pathLength="1"
+            stroke-dashoffset="1" />
+          <circle
+            class="timed-exercise-dial-overtime"
+            data-timed-exercise-overtime
+            cx="126"
+            cy="126"
+            r="119"
+            pathLength="1"
+            stroke-dashoffset="1" />
+        </svg>
+
+        <div class="timed-exercise-dial-content">
+          <span class="timed-exercise-overtime-badge">Overtime</span>
+          <span class="timed-exercise-readout" data-timed-exercise-readout>0:00</span>
+          <span class="timed-exercise-support" data-timed-exercise-support>of 0:30</span>
+        </div>
+      </div>
+
+      <div class="timed-exercise-actions">
+        <span class="timed-exercise-action timed-exercise-finish">Finish</span>
+        <span class="timed-exercise-action timed-exercise-quit">Quit</span>
+        <span class="timed-exercise-explanation">Finish logs the time · Quit discards</span>
+      </div>
+    </div>
+  </div>
+</div>

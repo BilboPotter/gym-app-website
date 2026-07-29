@@ -754,6 +754,31 @@ input:focus-visible {
   object-position: center top;
 }
 
+.device .exercise-video-frame {
+  position: absolute;
+  top: 3.7%;
+  left: 6%;
+  right: 6%;
+  z-index: 2;
+  height: 26.5%;
+  overflow: hidden;
+  border-radius: 8%;
+  background: #f1f1eb;
+}
+
+.exercise-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 160ms ease;
+}
+
+.exercise-video-frame.is-fallback .exercise-video {
+  opacity: 0;
+}
+
 .device .screen--auth {
   --screen-image: url("/assets/app-auth-bg.jpg");
   --screen-image-opacity: 0.42;

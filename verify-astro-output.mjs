@@ -518,6 +518,122 @@ function verifyStoreLinks() {
   assert(indexHtml.includes(CONFIG.googlePlayUrl), 'Homepage is missing the Google Play URL');
 }
 
+function verifyTimedExerciseDemo() {
+  const indexHtml = readFile('index.html');
+  const sourceScript = fs.readFileSync(path.join(ROOT, 'src', 'scripts', 'main.js'), 'utf8');
+  const sourceCss = fs.readFileSync(path.join(ROOT, 'src', 'styles', 'main.css'), 'utf8');
+
+  [
+    'assets/product-timed-exercise-active.jpg',
+    'assets/product-timed-exercise-demo-start.jpg',
+    'assets/product-timed-exercise-demo-saved.jpg',
+  ].forEach(assertExists);
+
+  assert(
+    indexHtml.includes('data-timed-exercise-demo'),
+    'Homepage is missing the timed-exercise HTML demo',
+  );
+  assert(
+    indexHtml.includes('data-target-seconds="30"') &&
+      indexHtml.includes('data-finish-seconds="35"'),
+    'Timed-exercise demo does not run from its 30-second target through five seconds of overtime',
+  );
+  assert(
+    indexHtml.includes('data-timed-exercise-progress') &&
+      indexHtml.includes('data-timed-exercise-overtime'),
+    'Timed-exercise demo is missing its live SVG progress rings',
+  );
+  assert(
+    (indexHtml.match(/stroke-dashoffset="1"/g) ?? []).length >= 2 &&
+      !sourceCss
+        .slice(
+          sourceCss.indexOf('.timed-exercise-dial-progress,'),
+          sourceCss.indexOf('.timed-exercise-dial-progress {'),
+        )
+        .includes('stroke-dashoffset'),
+    'Timed-exercise ring initialization still overrides live progress updates',
+  );
+  assert(
+    indexHtml.includes('dataset.finishSeconds') &&
+      indexHtml.includes('target-reached') &&
+      indexHtml.includes('stroke-dashoffset'),
+    'Homepage is missing the timed-exercise state-machine initialization',
+  );
+  assert(
+    sourceScript.includes('Math.min(elapsed / targetSeconds, 1)') &&
+      sourceScript.includes('Math.min(overtimeSeconds / targetSeconds, 1)') &&
+      sourceScript.includes('window.setInterval(sampleTimer, 1000)') &&
+      sourceScript.includes('" over"'),
+    'Timed-exercise demo is missing synchronized target and overtime ring progress',
+  );
+  assert(
+    sourceCss.includes('animation: timed-exercise-target 400ms linear') &&
+      sourceCss.includes('translateX(-8px)') &&
+      sourceCss.includes('translateX(7px)') &&
+      sourceCss.includes('translateX(-5px)') &&
+      sourceCss.includes('translateX(3px)'),
+    'Timed-exercise demo is missing the live-app target pop and shake',
+  );
+  assert(
+    !indexHtml.includes('product-timed-exercise-live.mp4'),
+    'Homepage still references the retired timer video',
+  );
+  assert(
+    !fs.existsSync(path.join(DIST, 'assets', 'product-timed-exercise-live.mp4')),
+    'Retired timer video still exists in the production output',
+  );
+}
+
+function verifyAutoProgressionGraph() {
+  const indexHtml = readFile('index.html');
+  const cssMatch = indexHtml.match(/href="(\/styles\/main\.[^"]+\.css)"/);
+
+  assert(
+    indexHtml.includes('id="progression-glow-gradient"'),
+    'Homepage is missing the progressive Auto-progression glow',
+  );
+  assert(
+    indexHtml.includes('stop-opacity="0.286"'),
+    'Auto-progression glow is missing its 30% stronger endpoint',
+  );
+  assert(
+    indexHtml.includes('S1110 235 1200 190'),
+    'Auto-progression line does not reach the visible upper-right boundary',
+  );
+  assert(
+    indexHtml.includes('data-auto-progression-graph'),
+    'Auto-progression graph is missing its dedicated viewport trigger',
+  );
+  assert(
+    !indexHtml.includes('class="auto-progression-graph reveal"'),
+    'Auto-progression graph is still attached to the generic early reveal observer',
+  );
+  assert(
+    indexHtml.includes('threshold:.35') &&
+      indexHtml.includes('rootMargin:"0px 0px -8% 0px"'),
+    'Auto-progression graph is missing its delayed section observer',
+  );
+
+  assert(cssMatch?.[1], 'Homepage is missing the hashed stylesheet reference');
+  const mainCss = readFile(cssMatch[1].slice(1));
+  const sourceCss = fs.readFileSync(path.join(ROOT, 'src', 'styles', 'main.css'), 'utf8');
+  const graphCssStart = sourceCss.indexOf('.auto-progression-graph {');
+  const graphCssEnd = sourceCss.indexOf('.auto-progression-layout {', graphCssStart);
+  const graphCss = sourceCss.slice(graphCssStart, graphCssEnd);
+  assert(
+    mainCss.includes('clip-path:inset(0 100% 0 0)') &&
+      mainCss.includes('clip-path:inset(0)'),
+    'Auto-progression graph is missing its single synchronized reveal',
+  );
+  assert(
+    graphCssStart >= 0 &&
+      graphCssEnd > graphCssStart &&
+      !graphCss.includes('stroke-dashoffset') &&
+      !graphCss.includes('transition-delay'),
+    'Auto-progression graph still contains stitched animation timings',
+  );
+}
+
 function main() {
   verifyHtmlRoutes();
   verifyBlogPosts();
@@ -541,6 +657,8 @@ function main() {
   verifyAppleAppSiteAssociation();
   verifyAndroidAssetLinks();
   verifyStoreLinks();
+  verifyTimedExerciseDemo();
+  verifyAutoProgressionGraph();
 
   console.log('Verified Astro build output.');
 }

@@ -12,3 +12,7 @@ logo-concepts/
 favicon_logo-concepts/
 maatriks brand/
 docs/
+
+# Local assistant guidance and planning context
+/AGENTS.md
+/CLAUDE.md
