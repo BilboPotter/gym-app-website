@@ -1,10 +1,11 @@
-# PRD: maatriks.ai Public Website
+# PRD: Maatriks Gym Public Website
 
 Last updated: 2026-04-14
 
 ## Overview
 
-This repository owns the public website for `maatriks.ai`.
+This repository owns the Maatriks gym app's public website at `jõmm.ee`
+(`https://xn--jmm-ona.ee`). Every HTML route is intentionally `noindex`.
 
 The site exists to support the mobile app with:
 

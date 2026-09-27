@@ -260,7 +260,7 @@ function renderCard({
 
   <g transform="translate(744 408)">
     <rect width="340" height="134" rx="22" fill="rgba(17,17,24,0.82)" stroke="rgba(255,255,255,0.08)"/>
-    <text x="30" y="42" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="600" letter-spacing="3.2">MAATRIKS.AI</text>
+    <text x="30" y="42" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="600" letter-spacing="3.2">JÕMM.EE</text>
     <text x="30" y="84" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="34" font-weight="700" letter-spacing="-1.2">${escapeXml(accentTitle)}</text>
     <text x="30" y="112" fill="#8e8e9a" font-family="'DM Sans', sans-serif" font-size="18" font-weight="500">${escapeXml(footer)}</text>
   </g>
@@ -334,7 +334,7 @@ function renderFeatureCard({
   <text x="76" y="164" fill="#ff8a1f" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="700" letter-spacing="4.4">${escapeXml(label)}</text>
   <text x="76" y="248" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="68" font-weight="800" letter-spacing="-3.2">${title}</text>
   <text x="76" y="505" fill="#b9b9c3" font-family="'DM Sans', sans-serif" font-size="26" font-weight="500">${escapeXml(description)}</text>
-  <text x="76" y="570" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="600" letter-spacing="2.2">MAATRIKS.AI</text>
+  <text x="76" y="570" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="600" letter-spacing="2.2">JÕMM.EE</text>
   ${visual}
 </svg>`;
 
@@ -351,7 +351,7 @@ renderCard({
     'a clearer plan.',
   ],
   description: 'Practical training guides and current product notes.',
-  footer: 'maatriks.ai/blog',
+  footer: 'jõmm.ee/blog',
   accentTitle: 'Guides and product notes',
 });
 

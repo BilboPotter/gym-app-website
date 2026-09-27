@@ -106,9 +106,7 @@ ${sitemapEntries.map(({ url, lastModified }) => `  <url>
   writeFile('sitemap.xml', sitemapXml);
 
   const robotsTxt = `User-agent: *
-Allow: /
-
-Sitemap: ${siteConfig.siteUrl}/sitemap.xml`;
+Allow: /\n`;
   writeFile('robots.txt', robotsTxt);
 }
 

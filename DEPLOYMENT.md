@@ -41,10 +41,15 @@ Before pushing a production change:
 ## Custom Domain
 
 The Astro deployment writes `astro-dist/CNAME` from `site.config.json`.
+The GitHub Pages Actions deployment also requires the custom domain to be set in
+the repository's Pages settings; the generated CNAME does not set it.
 
-Current production domain:
+Configured domain:
 
-- `maatriks.ai`
+- `jõmm.ee`, using `xn--jmm-ona.ee` in Pages, DNS and canonical HTTPS URLs
+
+Every HTML route is `noindex`. `robots.txt` allows crawling so that crawlers can
+read the directive and does not advertise the generated sitemap.
 
 ## DNS For GitHub Pages
 
@@ -62,12 +67,15 @@ Optional IPv6 `AAAA` records:
 - `2606:50c0:8002::153`
 - `2606:50c0:8003::153`
 
-If `www.maatriks.ai` is also needed, point `www` to the GitHub Pages hostname with a `CNAME`.
+For `www.xn--jmm-ona.ee`, use a `CNAME` pointing to `bilbopotter.github.io`.
 
 ## DNS Safety Notes
 
 - leave existing mail-related `MX` and `TXT` records alone unless mail is being moved intentionally
 - leave unrelated verification records alone
+- verify domain ownership with the GitHub account TXT record before setting the
+  repository's Pages custom domain, then configure the destination DNS
+- preserve every existing `maatriks.ai` DNS record; this cutover uses a separate domain
 - verify the custom domain inside GitHub Pages settings after DNS resolves
 - enable HTTPS in GitHub Pages after the domain verifies
 

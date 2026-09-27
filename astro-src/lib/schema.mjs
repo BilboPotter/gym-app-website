@@ -49,7 +49,7 @@ export function websiteSchema() {
     '@type': 'WebSite',
     '@id': schemaIds.website,
     name: 'Maatriks',
-    alternateName: 'maatriks.ai',
+    alternateName: 'jõmm.ee',
     url: `${siteConfig.siteUrl}/`,
     publisher: {
       '@id': schemaIds.organization,

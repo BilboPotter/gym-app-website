@@ -1,5 +1,5 @@
 /**
- * maatriks.ai — landing interactions
+ * Maatriks — landing interactions
  * Single scroll-driven animation loop, lightweight observers, no dependencies.
  */
 

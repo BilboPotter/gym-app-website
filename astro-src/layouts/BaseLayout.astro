@@ -22,7 +22,7 @@ const {
   mainStyle = '',
   includeConsent = true,
   includeMainScript = true,
-  robotsContent = 'index, follow',
+  robotsContent = 'noindex, follow',
   structuredData = [],
 } = Astro.props;
 
@@ -66,7 +66,6 @@ const inlineConsentScript = (assets.scripts['consent.js']?.content || '').replac
     {authorName && <meta property="article:author" content={authorName} />}
     <meta name="theme-color" content="#050505" />
     <link rel="icon" href={assets.faviconHref} type="image/svg+xml" />
-    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="alternate" type="application/rss+xml" title={`${siteConfig.appName} Blog`} href="/blog/feed.xml" />
     <link rel="preload" href={assets.fonts.dmSansHref} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={assets.fonts.jetbrainsMonoHref} as="font" type="font/woff2" crossorigin />

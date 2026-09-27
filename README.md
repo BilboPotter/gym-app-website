@@ -1,6 +1,11 @@
-# maatriks.ai
+# Maatriks gym website
 
-Public website for the `maatriks.ai` mobile app.
+Public website for the Maatriks gym mobile app at `jõmm.ee`.
+
+The canonical HTTPS origin is `https://xn--jmm-ona.ee`, the ASCII form of the
+internationalized domain. Every HTML route is `noindex`; crawlers remain allowed
+to read those directives. Support email remains `info@maatriks.ai` and app auth
+handoffs retain the `maatriks://` scheme.
 
 The site is deployed as Astro static output. Astro is the single build path for local development, CI, and GitHub Pages deployment.
 

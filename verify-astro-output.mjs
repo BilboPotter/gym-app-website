@@ -85,6 +85,51 @@ function verifyHtmlRoutes() {
   htmlFiles.forEach(assertExists);
 }
 
+function verifyEveryHtmlRoute(directory = DIST) {
+  let routeCount = 0;
+
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const fullPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      routeCount += verifyEveryHtmlRoute(fullPath);
+      continue;
+    }
+    if (!entry.isFile() || !entry.name.endsWith('.html')) {
+      continue;
+    }
+
+    const relativePath = path.relative(DIST, fullPath);
+    const html = readFile(relativePath);
+    const robots = extractTagValue(
+      html,
+      /<meta name="robots" content="([^"]+)"/i,
+      'a robots directive',
+      relativePath,
+    ).toLowerCase().split(/[\s,]+/);
+    assert(robots.includes('noindex'), `${relativePath} must be noindex`);
+    assert(!robots.includes('index') && !robots.includes('all'), `${relativePath} permits indexing`);
+
+    const canonical = extractTagValue(
+      html,
+      /<link rel="canonical" href="([^"]+)"/i,
+      'a canonical link',
+      relativePath,
+    );
+    assert(
+      new URL(canonical).origin === CONFIG.siteUrl,
+      `${relativePath} has the wrong canonical origin: ${canonical}`,
+    );
+    assert(
+      !/https?:\/\/(?:www\.)?maatriks\.ai(?:[\s/"'<>?#]|$)/i.test(html),
+      `${relativePath} still references the previous website origin`,
+    );
+    assert(!/<link\b[^>]*rel="sitemap"/i.test(html), `${relativePath} advertises a sitemap`);
+    routeCount += 1;
+  }
+
+  return routeCount;
+}
+
 function verifyBlogPosts() {
   const posts = loadBlogPosts();
   const expectedSlugs = posts.map((post) => post.slug).sort();
@@ -132,9 +177,11 @@ function verifyStaticArtifacts() {
 
   const robots = readFile('robots.txt');
   assert(
-    robots.includes(`Sitemap: ${CONFIG.siteUrl}/sitemap.xml`),
-    'robots.txt is missing the sitemap URL',
+    /^User-agent:\s*\*\s*$/mi.test(robots) && /^Allow:\s*\/\s*$/mi.test(robots),
+    'robots.txt must allow crawlers to observe the noindex directives',
   );
+  assert(!/^Disallow:\s*\S/mi.test(robots), 'robots.txt must not block crawling');
+  assert(!/^Sitemap:/mi.test(robots), 'robots.txt must not advertise a sitemap');
 
   const sitemap = readFile('sitemap.xml');
   getStaticSeoPages().map((page) => absoluteUrl(page.path)).forEach((url) => {
@@ -204,7 +251,7 @@ function findSchemaByType(entries, expectedType) {
 
 function verifySeoOutput() {
   const posts = loadBlogPosts();
-  const indexableEntries = [
+  const contentEntries = [
     ...getStaticSeoPages().map((page) => ({
       routePath: page.path,
       lastModified: page.lastModified,
@@ -217,11 +264,11 @@ function verifySeoOutput() {
       post,
     })),
   ];
-  const routeSet = new Set(indexableEntries.map((entry) => entry.routePath));
+  const routeSet = new Set(contentEntries.map((entry) => entry.routePath));
   const titles = new Map();
   const descriptions = new Map();
 
-  indexableEntries.forEach((entry) => {
+  contentEntries.forEach((entry) => {
     const relativePath = routeToHtmlPath(entry.routePath);
     const html = readFile(relativePath);
     const title = extractTagValue(html, /<title>([\s\S]*?)<\/title>/i, 'a title', relativePath);
@@ -344,10 +391,10 @@ function verifySeoOutput() {
     /<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g,
   )].map((match) => ({ url: match[1], lastModified: match[2] }));
   assert(
-    sitemapEntries.length === indexableEntries.length,
-    `Expected ${indexableEntries.length} sitemap entries, found ${sitemapEntries.length}`,
+    sitemapEntries.length === contentEntries.length,
+    `Expected ${contentEntries.length} sitemap entries, found ${sitemapEntries.length}`,
   );
-  indexableEntries.forEach((entry) => {
+  contentEntries.forEach((entry) => {
     const sitemapEntry = sitemapEntries.find((candidate) => candidate.url === absoluteUrl(entry.routePath));
     assert(sitemapEntry, `Sitemap is missing ${entry.routePath}`);
     assert(
@@ -369,7 +416,7 @@ function verifySeoOutput() {
     );
   });
 
-  const generatedContent = indexableEntries
+  const generatedContent = contentEntries
     .map((entry) => readFile(routeToHtmlPath(entry.routePath)))
     .join('\n');
   for (const stalePhrase of [
@@ -814,6 +861,31 @@ function verifyAuthHandoffBehavior({ deepLink, pathname, scriptBody, scriptFileN
       search: '?token_hash=H&type=signup',
     },
     {
+      entries: [
+        ['code', 'PKCE-code'],
+        ['auth_state', 'S'],
+      ],
+      hash: '#auth_state=S',
+      label: `${scriptFileName}: authorization code with fragment state`,
+      search: '?code=PKCE-code',
+    },
+    {
+      entries: [
+        ['auth_state', 'S'],
+        ['access_token', 'A'],
+        ['refresh_token', 'R'],
+        ['provider_token', 'P'],
+        ['provider_refresh_token', 'PR'],
+        ['expires_in', '3600'],
+        ['expires_at', '1800000000'],
+        ['token_type', 'bearer'],
+        ['type', 'recovery'],
+      ],
+      hash: '#access_token=A&refresh_token=R&provider_token=P&provider_refresh_token=PR&expires_in=3600&expires_at=1800000000&token_type=bearer&type=recovery',
+      label: `${scriptFileName}: complete token handoff`,
+      search: '?auth_state=S',
+    },
+    {
       entries: [],
       hash: '',
       label: `${scriptFileName}: empty valid handoff`,
@@ -1091,7 +1163,10 @@ function verifyAutoProgressionGraph() {
 }
 
 function main() {
+  assert(CONFIG.siteUrl === 'https://xn--jmm-ona.ee', 'The website must use the ASCII origin for jõmm.ee');
   verifyHtmlRoutes();
+  const htmlRouteCount = verifyEveryHtmlRoute();
+  assert(htmlRouteCount > 0, 'No generated HTML routes found');
   verifyBlogPosts();
   verifyStaticArtifacts();
   verifyAssetFingerprinting();
@@ -1119,7 +1194,7 @@ function main() {
   verifyHomepageContentLayout();
   verifyAutoProgressionGraph();
 
-  console.log('Verified Astro build output.');
+  console.log(`Verified Astro build output, including noindex and canonical origin on all ${htmlRouteCount} HTML routes.`);
 }
 
 main();
